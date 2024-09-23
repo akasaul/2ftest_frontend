@@ -55,18 +55,7 @@ const SignUp = () => {
   return (
     <Stack spacing={3}>
       <Stack spacing={1}>
-        <Typography variant="h4">Sign up</Typography>
-        <Typography color="text.secondary" variant="body2">
-          Already have an account?{" "}
-          <Link
-            component={RouterLink}
-            href={paths.auth.signIn}
-            underline="hover"
-            variant="subtitle2"
-          >
-            Sign in
-          </Link>
-        </Typography>
+        <Typography variant="h4">Pizza</Typography>
       </Stack>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={2}>
@@ -191,9 +180,9 @@ const SignUp = () => {
                 <FormControlLabel
                   control={<Checkbox {...field} />}
                   label={
-                    <React.Fragment>
-                      I have read the <Link>terms and conditions</Link>
-                    </React.Fragment>
+                    <Typography variant="body1">
+                      I accept the Terms and Conditions
+                    </Typography>
                   }
                 />
                 {errors.terms ? (
@@ -202,15 +191,26 @@ const SignUp = () => {
               </div>
             )}
           />
-          {errors.root ? (
-            <Alert color="error">{errors.root.message}</Alert>
-          ) : null}
-          <Button disabled={isPending} type="submit" variant="contained">
+          <Button
+            disabled={isPending}
+            type="submit"
+            variant="contained"
+            sx={{ height: "42px" }}
+          >
             Sign up
           </Button>
+          <Typography variant="body1" sx={{ textAlign: "center" }}>
+            Already have an account{" "}
+            <Link
+              component={RouterLink}
+              href={paths.auth.signIn}
+              underline="hover"
+            >
+              Login
+            </Link>
+          </Typography>
         </Stack>
       </form>
-      <Alert color="warning">Register to start using the app</Alert>
     </Stack>
   );
 };

@@ -5,11 +5,14 @@ import { TypographyOptions } from "@mui/material/styles/createTypography";
 const typography: TypographyOptions = {
   fontFamily:
     '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"',
-  body1: { fontSize: "1rem", fontWeight: 400, lineHeight: 1.5 },
+  body1: { fontSize: "16px", fontWeight: 400, lineHeight: "24px" },
   body2: { fontSize: "0.875rem", fontWeight: 400, lineHeight: 1.57 },
-  button: { fontWeight: 500 },
+  button: {
+    fontWeight: 700,
+    color: "#fff",
+  },
   caption: { fontSize: "0.75rem", fontWeight: 400, lineHeight: 1.66 },
-  subtitle1: { fontSize: "1rem", fontWeight: 500, lineHeight: 1.57 },
+  subtitle1: { fontsize: "1rem", fontweight: 500, lineheight: 1.57 },
   subtitle2: { fontSize: "0.875rem", fontWeight: 500, lineHeight: 1.57 },
   overline: {
     fontSize: "0.75rem",
@@ -18,7 +21,7 @@ const typography: TypographyOptions = {
     lineHeight: 2.5,
     textTransform: "uppercase",
   },
-  h1: { fontSize: "3.5rem", fontWeight: 500, lineHeight: 1.2 },
+  h1: { fontSize: "150px", fontWeight: 700, lineHeight: "225px" },
   h2: { fontSize: "3rem", fontWeight: 500, lineHeight: 1.2 },
   h3: { fontSize: "2.25rem", fontWeight: 500, lineHeight: 1.2 },
   h4: { fontSize: "2rem", fontWeight: 500, lineHeight: 1.2 },
@@ -31,9 +34,13 @@ const theme = createTheme({
     light: {
       palette: {
         primary: {
-          main: "#0f0",
-          light: "#f00",
-          dark: "#f00",
+          main: "#FF8100",
+          light: "#FF962C",
+          dark: "#FF962C",
+        },
+        background: {
+          default: "#fff",
+          paper: "#fff",
         },
         secondary: {
           main: "#00f",
@@ -44,7 +51,16 @@ const theme = createTheme({
     },
   },
   shape: {
-    borderRadius: 8,
+    borderRadius: 4,
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          color: "#FDFFFE",
+        },
+      },
+    },
   },
 });
 

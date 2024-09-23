@@ -8,8 +8,8 @@ import ThemeProvider from "@mui/material/styles/ThemeProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "A Library App",
-  description: "A librarian app",
+  title: "Niko Pizza | Home",
+  description: "A pizza ordering app",
 };
 
 export default function RootLayout({
