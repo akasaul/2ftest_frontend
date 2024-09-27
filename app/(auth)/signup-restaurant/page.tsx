@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import RouterLink from "next/link";
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
@@ -19,24 +18,13 @@ import { EyeSlash as EyeSlashIcon } from "@phosphor-icons/react/dist/ssr/EyeSlas
 import { Controller, useForm } from "react-hook-form";
 import { z as zod } from "zod";
 import { styled } from "@mui/material/styles";
+import { useSignUpRestaurant } from "@/services/mutations/auth.mutations";
+import { useAuth } from "@/providers/AuthProvider";
 
 import { signUpRestaurantSchema } from "@/schmas/auth";
 import { paths } from "@/paths";
-import { uploadImageToCloudinary } from "@/actions/uploadToCloudinary";
 
 type Values = zod.infer<typeof signUpRestaurantSchema>;
-
-const defaultValues: Values = {
-  firstName: "",
-  lastName: "",
-  restaurantName: "",
-  location: "",
-  email: "",
-  password: "",
-  phoneNumber: "",
-  confirmPassword: "",
-  terms: false,
-};
 
 const SignUpRestaurant = () => {
   const [isPending] = React.useState<boolean>(false);
@@ -50,7 +38,6 @@ const SignUpRestaurant = () => {
     getValues,
     formState: { errors },
   } = useForm<Values>({
-    defaultValues,
     resolver: zodResolver(signUpRestaurantSchema),
   });
 
@@ -66,20 +53,25 @@ const SignUpRestaurant = () => {
     width: 1,
   });
 
+  const { mutateAsync: signUpRestaurant } = useSignUpRestaurant();
+
+  const { login } = useAuth();
+
   const onSubmit = async (values: Values) => {
-    // const arrayBuffer = await values.logo.arrayBuffer();
-    // const imgBuffer = new Uint8Array(arrayBuffer);
-    // const cloudinaryUrl = await uploadImageToCloudinary(imgBuffer);
     const formData = new FormData();
     formData.append("firstName", values.firstName);
     formData.append("lastName", values.lastName);
-    formData.append("restaurantName", values.restaurantName);
+    formData.append("name", values.restaurantName);
     formData.append("location", values.location);
     formData.append("phoneNumber", values.phoneNumber);
     formData.append("email", values.email);
     formData.append("password", values.password);
-    formData.append("confirmPassword", values.confirmPassword);
     formData.append("logo", values.logo);
+
+    const {
+      data: { user },
+    } = await signUpRestaurant(formData);
+    login(user.user.token, "restaurant");
   };
 
   return (

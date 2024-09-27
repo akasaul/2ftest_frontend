@@ -19,6 +19,7 @@ import { Eye as EyeIcon } from "@phosphor-icons/react/dist/ssr/Eye";
 import { EyeSlash as EyeSlashIcon } from "@phosphor-icons/react/dist/ssr/EyeSlash";
 import { Controller, useForm } from "react-hook-form";
 import { z as zod } from "zod";
+import { useAuth } from "@/providers/AuthProvider";
 
 import { signUpSchema } from "@/schmas/auth";
 import { paths } from "@/paths";
@@ -26,19 +27,7 @@ import { useSignUp } from "@/services/mutations/auth.mutations";
 
 type Values = zod.infer<typeof signUpSchema>;
 
-const defaultValues: Values = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  password: "",
-  confirmPassword: "",
-  terms: false,
-};
-
 const SignUp = () => {
-  const router = useRouter();
-
-  const [isPending, setIsPending] = React.useState<boolean>(false);
   const [showPassword, setShowPassword] = React.useState<boolean>();
   const [showConfirmPassword, setShowConfirmPassword] =
     React.useState<boolean>();
@@ -47,12 +36,14 @@ const SignUp = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<Values>({ defaultValues, resolver: zodResolver(signUpSchema) });
+  } = useForm<Values>({ resolver: zodResolver(signUpSchema) });
 
-  const { mutateAsync: signUp } = useSignUp();
+  const { isPending, isError, error, mutateAsync: signUp } = useSignUp();
+  const {login} = useAuth();
 
   const onSubmit = async (values: Values) => {
-    await signUp(values);
+    const { data } = await signUp(values);
+  login(data.user.token, "customer");
   };
 
   return (
@@ -88,6 +79,7 @@ const SignUp = () => {
               </FormControl>
             )}
           />
+
           <Controller
             control={control}
             name="email"
@@ -101,6 +93,21 @@ const SignUp = () => {
               </FormControl>
             )}
           />
+
+          <Controller
+            control={control}
+            name="phoneNumber"
+            render={({ field }) => (
+              <FormControl error={Boolean(errors.phoneNumber)}>
+                <InputLabel>Phone number</InputLabel>
+                <OutlinedInput {...field} label="Phone number" type={"text"} />
+                {errors.phoneNumber ? (
+                  <FormHelperText>{errors.phoneNumber.message}</FormHelperText>
+                ) : null}
+              </FormControl>
+            )}
+          />
+
           <Controller
             control={control}
             name="password"
@@ -137,6 +144,7 @@ const SignUp = () => {
               </FormControl>
             )}
           />
+
           <Controller
             control={control}
             name="confirmPassword"
@@ -175,6 +183,7 @@ const SignUp = () => {
               </FormControl>
             )}
           />
+
           <Controller
             control={control}
             name="terms"
@@ -194,6 +203,7 @@ const SignUp = () => {
               </div>
             )}
           />
+
           <Button
             disabled={isPending}
             type="submit"
@@ -212,6 +222,13 @@ const SignUp = () => {
               Login
             </Link>
           </Typography>
+
+          {
+            isError &&
+            <Alert severity="error">
+                {error.message}
+            </Alert>
+          }
 
           <Typography variant="body1" sx={{ textAlign: "center" }}>
             Are you a restaurant?{" "}

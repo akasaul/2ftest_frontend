@@ -6,6 +6,12 @@ export const signUpSchema = zod
     firstName: zod.string().min(1, { message: "First name is required" }),
     lastName: zod.string().min(1, { message: "Last name is required" }),
     email: zod.string().min(1, { message: "Email is required" }).email(),
+    phoneNumber: zod
+      .string()
+      .regex(
+        /^0[79]\d{8}$/,
+        "Phone number must start with 09 or 07 and be exactly 10 digits long.",
+      ),
     password: zod
       .string()
       .min(6, { message: "Password should be at least 6 characters" }),

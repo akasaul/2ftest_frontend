@@ -2,15 +2,33 @@ import { signInSchema, signUpSchema } from "@/schmas/auth";
 import { apiRoutes } from "../apiRoutes";
 import { z } from "zod";
 import { api } from "@/lib/api";
-import { SignInRespose } from "@/services/types/auth";
-
+import {
+  SignInRespose,
+  SignUpRestaurantResponse,
+  SignUpResponse
+} from "@/services/types/auth.type";
 
 export const signIn = async (signInBody: z.infer<typeof signInSchema>) => {
   const res = await api.post<SignInRespose>(apiRoutes.auth.logIn, signInBody);
   return res;
 };
 
+export const signUpRestaurant = async (signUpBody: FormData) => {
+  const res = await api.post<SignUpRestaurantResponse>(
+    apiRoutes.auth.signUpRestaurant,
+    signUpBody,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    },
+  );
+  return res;
+};
 export const signUp = async (signUpBody: z.infer<typeof signUpSchema>) => {
-  const res = await api.post(apiRoutes.auth.signUp, signUpBody);
+  const res = await api.post<SignUpResponse>(
+    apiRoutes.auth.signUp,
+    signUpBody,
+  );
   return res;
 };
