@@ -4,6 +4,9 @@ import "./globals.css";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
 import theme from "@/styles/theme";
 import ThemeProvider from "@mui/material/styles/ThemeProvider";
+import TanstackProvider from "@/providers/TanstackProvider";
+import ToastProvider from "@/providers/ToastProvider";
+import { AuthProvider } from "@/providers/AuthProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,7 +24,13 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <AppRouterCacheProvider>
-          <ThemeProvider theme={theme}>{children}</ThemeProvider>
+          <AuthProvider>
+            <ThemeProvider theme={theme}>
+              <ToastProvider>
+                <TanstackProvider>{children}</TanstackProvider>
+              </ToastProvider>
+            </ThemeProvider>
+          </AuthProvider>
         </AppRouterCacheProvider>
       </body>
     </html>

@@ -20,6 +20,9 @@ import { z as zod } from "zod";
 
 import { paths } from "@/paths";
 import { signInSchema } from "@/schmas/auth";
+import { Checkbox, FormControlLabel } from "@mui/material";
+import { useSignIn } from "@/services/mutations/auth.mutations";
+import { useAuth } from "@/providers/AuthProvider";
 
 type Values = zod.infer<typeof signInSchema>;
 
@@ -29,11 +32,7 @@ const defaultValues: Values = {
 };
 
 const Login = () => {
-  const router = useRouter();
-
   const [showPassword, setShowPassword] = React.useState<boolean>();
-
-  const [isPending, setIsPending] = React.useState<boolean>(false);
 
   const {
     control,
@@ -41,25 +40,20 @@ const Login = () => {
     formState: { errors },
   } = useForm<Values>({ defaultValues, resolver: zodResolver(signInSchema) });
 
-  const onSubmit = (values: Values): Promise<void> => {
-    router.replace(paths.owner.myBooks);
+  const { mutateAsync: signIn, isPending } = useSignIn();
+
+  const { login } = useAuth();
+
+  const onSubmit = async (values: Values): Promise<void> => {
+    const { data } = await signIn(values);
+    login(data.user.token, data.restaurantId ? "restaurant" : "customer");
+    // router.replace(paths.owner.myBooks);
   };
 
   return (
-    <Stack spacing={4} minHeight={"100vh"} justifyContent={"center"}>
+    <Stack spacing={4} justifyContent={"center"}>
       <Stack spacing={1}>
-        <Typography variant="h4">Sign in</Typography>
-        <Typography color="text.secondary" variant="body2">
-          Don&apos;t have an account?{" "}
-          <Link
-            component={RouterLink}
-            href={paths.auth.signUp}
-            underline="hover"
-            variant="subtitle2"
-          >
-            Sign up
-          </Link>
-        </Typography>
+        <Typography variant="h6">Login</Typography>
       </Stack>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={2}>
@@ -112,24 +106,48 @@ const Login = () => {
               </FormControl>
             )}
           />
-          <div>
-            {/* <Link */}
-            {/*   component={RouterLink} */}
-            {/*   href={paths.auth.} */}
-            {/*   variant="subtitle2" */}
-            {/* > */}
-            {/*   Forgot password? */}
-            {/* </Link> */}
-          </div>
+
+          <Controller
+            control={control}
+            name="rememberMe"
+            render={({ field }) => (
+              <div>
+                <FormControlLabel
+                  control={<Checkbox {...field} />}
+                  label={<Typography variant="body1">Remember Me</Typography>}
+                />
+                {errors.rememberMe ? (
+                  <FormHelperText error>
+                    {errors.rememberMe.message}
+                  </FormHelperText>
+                ) : null}
+              </div>
+            )}
+          />
+
           {errors.root ? (
             <Alert color="error">{errors.root.message}</Alert>
           ) : null}
-          <Button disabled={isPending} type="submit" variant="contained">
-            Sign in
+          <Button
+            disabled={isPending}
+            type="submit"
+            variant="contained"
+            sx={{ height: "42px" }}
+          >
+            LOGIN
           </Button>
+          <Typography variant="body1" sx={{ textAlign: "center" }}>
+            Have not an account?{" "}
+            <Link
+              component={RouterLink}
+              href={paths.auth.signUp}
+              underline="hover"
+            >
+              Sign up
+            </Link>
+          </Typography>
         </Stack>
       </form>
-      <Alert color="warning">Login to access your account</Alert>
     </Stack>
   );
 };

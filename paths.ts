@@ -3,8 +3,12 @@ export const paths = {
   auth: {
     signIn: "/login",
     signUp: "/signup",
+    signUpRestaurant: "/signup-restaurant",
   },
   owner: {
-    myBooks: "/my-books",
+    dashboard: "/my-books",
+  },
+  user: {
+    home: "/home",
   },
 };

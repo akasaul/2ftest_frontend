@@ -4,7 +4,6 @@ import * as React from "react";
 import RouterLink from "next/link";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import FormControl from "@mui/material/FormControl";
@@ -19,26 +18,28 @@ import { Eye as EyeIcon } from "@phosphor-icons/react/dist/ssr/Eye";
 import { EyeSlash as EyeSlashIcon } from "@phosphor-icons/react/dist/ssr/EyeSlash";
 import { Controller, useForm } from "react-hook-form";
 import { z as zod } from "zod";
+import { styled } from "@mui/material/styles";
 
-import { signUpSchema } from "@/schmas/auth";
+import { signUpRestaurantSchema } from "@/schmas/auth";
 import { paths } from "@/paths";
-import { useSignUp } from "@/services/mutations/auth.mutations";
+import { uploadImageToCloudinary } from "@/actions/uploadToCloudinary";
 
-type Values = zod.infer<typeof signUpSchema>;
+type Values = zod.infer<typeof signUpRestaurantSchema>;
 
 const defaultValues: Values = {
   firstName: "",
   lastName: "",
+  restaurantName: "",
+  location: "",
   email: "",
   password: "",
+  phoneNumber: "",
   confirmPassword: "",
   terms: false,
 };
 
-const SignUp = () => {
-  const router = useRouter();
-
-  const [isPending, setIsPending] = React.useState<boolean>(false);
+const SignUpRestaurant = () => {
+  const [isPending] = React.useState<boolean>(false);
   const [showPassword, setShowPassword] = React.useState<boolean>();
   const [showConfirmPassword, setShowConfirmPassword] =
     React.useState<boolean>();
@@ -46,13 +47,39 @@ const SignUp = () => {
   const {
     control,
     handleSubmit,
+    getValues,
     formState: { errors },
-  } = useForm<Values>({ defaultValues, resolver: zodResolver(signUpSchema) });
+  } = useForm<Values>({
+    defaultValues,
+    resolver: zodResolver(signUpRestaurantSchema),
+  });
 
-  const { mutateAsync: signUp } = useSignUp();
+  const VisuallyHiddenInput = styled("input")({
+    clip: "rect(0 0 0 0)",
+    clipPath: "inset(50%)",
+    height: 1,
+    overflow: "hidden",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    whiteSpace: "nowrap",
+    width: 1,
+  });
 
   const onSubmit = async (values: Values) => {
-    await signUp(values);
+    // const arrayBuffer = await values.logo.arrayBuffer();
+    // const imgBuffer = new Uint8Array(arrayBuffer);
+    // const cloudinaryUrl = await uploadImageToCloudinary(imgBuffer);
+    const formData = new FormData();
+    formData.append("firstName", values.firstName);
+    formData.append("lastName", values.lastName);
+    formData.append("restaurantName", values.restaurantName);
+    formData.append("location", values.location);
+    formData.append("phoneNumber", values.phoneNumber);
+    formData.append("email", values.email);
+    formData.append("password", values.password);
+    formData.append("confirmPassword", values.confirmPassword);
+    formData.append("logo", values.logo);
   };
 
   return (
@@ -175,6 +202,111 @@ const SignUp = () => {
               </FormControl>
             )}
           />
+
+          <Controller
+            control={control}
+            name="phoneNumber"
+            render={({ field }) => (
+              <FormControl error={Boolean(errors.phoneNumber)}>
+                <InputLabel>Phone number</InputLabel>
+                <OutlinedInput {...field} label="Phone number" type={"text"} />
+                {errors.phoneNumber ? (
+                  <FormHelperText>{errors.phoneNumber.message}</FormHelperText>
+                ) : null}
+              </FormControl>
+            )}
+          />
+
+          <Controller
+            control={control}
+            name="restaurantName"
+            render={({ field }) => (
+              <FormControl error={Boolean(errors.restaurantName)}>
+                <InputLabel>Restaurant name</InputLabel>
+                <OutlinedInput
+                  {...field}
+                  label="Restaurant name"
+                  type={"text"}
+                />
+                {errors.restaurantName ? (
+                  <FormHelperText>
+                    {errors.restaurantName.message}
+                  </FormHelperText>
+                ) : null}
+              </FormControl>
+            )}
+          />
+
+          <Controller
+            control={control}
+            name="location"
+            render={({ field }) => (
+              <FormControl error={Boolean(errors.location)}>
+                <InputLabel>Location</InputLabel>
+                <OutlinedInput {...field} label="Location" type={"text"} />
+                {errors.location ? (
+                  <FormHelperText>{errors.location.message}</FormHelperText>
+                ) : null}
+              </FormControl>
+            )}
+          />
+
+          <Controller
+            control={control}
+            name={"logo"}
+            render={({ field: { value, onChange, ...fieldProps } }) => (
+              <div>
+                <Button
+                  sx={{
+                    border: "2px dashed #bfbfbf",
+                    backgroundColor: "transparent",
+                    color: "#ff9800",
+                    textTransform: "none",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    display: "flex",
+                    width: "100%",
+                    padding: "20px",
+                    height: "56px",
+                    "&:hover": {
+                      backgroundColor: "#fff7e6",
+                    },
+                  }}
+                  component="label"
+                  role={undefined}
+                  tabIndex={-1}
+                >
+                  <img
+                    src="/icons/upload.svg"
+                    alt="Upload Logo"
+                    style={{
+                      marginRight: "8px",
+                      width: "16px",
+                      height: "16px",
+                    }}
+                  />
+                  <h6>
+                    {getValues("logo") ? getValues("logo").name : "Upload Logo"}
+                  </h6>
+                  <VisuallyHiddenInput
+                    type="file"
+                    {...fieldProps}
+                    accept="image/png, image/jpeg, image/jpg"
+                    onChange={(event) =>
+                      onChange(event.target.files && event.target.files[0])
+                    }
+                  />
+                </Button>
+
+                {errors.logo ? (
+                  <FormHelperText color="red">
+                    {errors.logo.message}
+                  </FormHelperText>
+                ) : null}
+              </div>
+            )}
+          />
+
           <Controller
             control={control}
             name="terms"
@@ -212,21 +344,10 @@ const SignUp = () => {
               Login
             </Link>
           </Typography>
-
-          <Typography variant="body1" sx={{ textAlign: "center" }}>
-            Are you a restaurant?{" "}
-            <Link
-              component={RouterLink}
-              href={paths.auth.signUpRestaurant}
-              underline="hover"
-            >
-              Register
-            </Link>
-          </Typography>
         </Stack>
       </form>
     </Stack>
   );
 };
 
-export default SignUp;
+export default SignUpRestaurant;

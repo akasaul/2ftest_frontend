@@ -1,6 +1,8 @@
-import React from "react";
+interface Props {
+  children: React.ReactNode;
+}
 
-const OwnerLayout = ({ children }) => {
+const OwnerLayout = ({ children }: Props) => {
   return (
     <div>
       <p>Owner layout</p>
