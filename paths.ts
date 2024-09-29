@@ -11,4 +11,7 @@ export const paths = {
   user: {
     home: "/home",
   },
+  pizza: {
+    popular: '/pizzas/popular',
+  }
 };

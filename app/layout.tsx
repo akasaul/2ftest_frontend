@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Roboto } from "next/font/google";
 import "./globals.css";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
 import theme from "@/styles/theme";
@@ -7,8 +7,13 @@ import ThemeProvider from "@mui/material/styles/ThemeProvider";
 import TanstackProvider from "@/providers/TanstackProvider";
 import ToastProvider from "@/providers/ToastProvider";
 import { AuthProvider } from "@/providers/AuthProvider";
+import "swiper/css";
 
 const inter = Inter({ subsets: ["latin"] });
+const roboto = Roboto({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+});
 
 export const metadata: Metadata = {
   title: "Niko Pizza | Home",
@@ -22,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} ${roboto.className}`}>
         <AppRouterCacheProvider>
           <AuthProvider>
             <ThemeProvider theme={theme}>

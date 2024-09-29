@@ -4,7 +4,7 @@ import { TypographyOptions } from "@mui/material/styles/createTypography";
 
 const typography: TypographyOptions = {
   fontFamily:
-    '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"',
+    '"Inter", "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"',
   body1: { fontSize: "16px", fontWeight: 400, lineHeight: "24px" },
   body2: { fontSize: "0.875rem", fontWeight: 400, lineHeight: 1.57 },
   button: {
@@ -46,6 +46,9 @@ const theme = createTheme({
         // text: {
         //   secondary: "#01C550",
         // },
+        text: {
+          secondaryChannel: "#01C550",
+        },
         secondary: {
           main: "#01C550",
           light: "#01C550",

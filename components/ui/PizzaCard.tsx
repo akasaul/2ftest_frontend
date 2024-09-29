@@ -1,58 +1,76 @@
+import React from "react";
 import {
   Card,
   CardContent,
-  CardActions,
-  Stack,
+  CardMedia,
   Typography,
   Button,
+  Avatar,
+  CardActions,
+  Stack,
 } from "@mui/material";
-import React from "react";
 
-const PizzaCard = () => {
+interface PizzaCardProps {
+  image: string;
+  name: string;
+  description: string;
+  price: number;
+  restaurantName: string;
+  restaurantImage: string;
+}
+
+const PizzaCard: React.FC<PizzaCardProps> = ({
+  image,
+  name,
+  description,
+  price,
+  restaurantName,
+  restaurantImage,
+}) => {
   return (
     <Card
       sx={{
-        // maxWidth: "387px",
         background: "#fff",
         borderRadius: "25px",
         padding: "20px",
       }}
       elevation={0}
     >
+      <CardMedia component="img" image={image} alt={name} />
       <CardContent>
-        <img src="/vipPIzza.png" />
-        <Stack>
-          <Typography variant="h4" fontWeight={700}>
-            Margarita
-          </Typography>
-          <Typography variant="caption" color={"rgba(0, 0, 0, 0.7)"}>
-            Tomato, Mozzerella, Bell Peppers, Onions Olives
-          </Typography>
-        </Stack>
+        <Typography variant="h4" fontWeight={700}>
+          {name}
+        </Typography>
+
+        <Typography variant="caption" color="text.secondary">
+          {description}
+        </Typography>
+
         <Stack
           direction={"row"}
-          alignItems={"center"}
-          justifyContent={"space-between"}
-          width={"100%"}
-          marginY={"10px"}
+          alignItems="center"
+          justifyContent="space-between"
+          gap={4}
+          mt={2}
         >
           <Typography
             variant="h3"
             flex={3}
-            fontWeight={700}
-            color={"textSecondary"}
+            fontWeight={600}
+            color={"textSecondaryChannel"}
           >
-            150
+            {price}
           </Typography>
+
           <Button
             variant={"contained"}
             sx={{
-              flex: 4,
+              flex: 3,
               borderRadius: "10px",
               textTransform: "none",
-              fontSize: "32px",
+              fontSize: "24px",
+              height: "48px",
               fontWeight: 700,
-              lineHeight: "46.3px",
               letterSpacing: "0.03em",
               textAlign: "left",
             }}
@@ -73,18 +91,22 @@ const PizzaCard = () => {
           width={"100%"}
           marginY={"10px"}
         >
-          <img
-            src="userPH.jpeg"
-            style={{
-              height: "65px",
+          <Avatar
+            sx={{
               width: "65px",
-              objectFit: "cover",
-              borderRadius: "50%",
+              height: "65px",
             }}
+            alt={restaurantName}
+            src={restaurantImage}
           />
-
-          <Typography variant="h5" fontWeight={700}>
-            Azmera Pizza
+          <Typography
+            variant="h5"
+            sx={{
+              opacity: 0.7,
+            }}
+            fontWeight={700}
+          >
+            {restaurantName}
           </Typography>
         </Stack>
       </CardActions>
