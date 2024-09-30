@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   Card,
@@ -10,8 +12,10 @@ import {
   CardActions,
   Stack,
 } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 interface PizzaCardProps {
+  id: number;
   image: string;
   name: string;
   description: string;
@@ -21,6 +25,7 @@ interface PizzaCardProps {
 }
 
 const PizzaCard = ({
+  id,
   image,
   name,
   description,
@@ -28,6 +33,7 @@ const PizzaCard = ({
   restaurantName,
   restaurantImage,
 }: PizzaCardProps) => {
+  const router = useRouter();
   return (
     <Card
       sx={{
@@ -105,6 +111,7 @@ const PizzaCard = ({
               letterSpacing: "0.03em",
               textAlign: "left",
             }}
+            onClick={() => router.push(`/menus/${id}`)}
           >
             Order
           </Button>

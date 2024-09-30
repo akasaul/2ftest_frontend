@@ -7,7 +7,7 @@ import Footer from "./Footer";
 
 const Home = () => {
   return (
-    <Box bgcolor={"#FFF8F1"} height={"100vh"}>
+    <Box bgcolor={"#FFF9F1"} height={"100vh"}>
       <Hero />
       <FeaturedPizzas />
       <PopularRestaurants />

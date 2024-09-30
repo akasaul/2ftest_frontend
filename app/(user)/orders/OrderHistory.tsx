@@ -53,6 +53,7 @@ const OrderHistory = () => {
           columnGap: "40px",
         }}
       >
+        {data?.data?.length == 0 && <p>No orders yet</p>}
         {data?.data?.map((pizza) => (
           <OrderCard
             key={pizza.id}

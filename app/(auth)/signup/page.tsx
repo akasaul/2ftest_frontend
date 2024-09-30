@@ -39,11 +39,11 @@ const SignUp = () => {
   } = useForm<Values>({ resolver: zodResolver(signUpSchema) });
 
   const { isPending, isError, error, mutateAsync: signUp } = useSignUp();
-  const {login} = useAuth();
+  const { login } = useAuth();
 
   const onSubmit = async (values: Values) => {
     const { data } = await signUp(values);
-  login(data.user.token, "customer");
+    login(data.user.token, "customer");
   };
 
   return (
@@ -223,12 +223,7 @@ const SignUp = () => {
             </Link>
           </Typography>
 
-          {
-            isError &&
-            <Alert severity="error">
-                {error.message}
-            </Alert>
-          }
+          {isError && <Alert severity="error">{error.message}</Alert>}
 
           <Typography variant="body1" sx={{ textAlign: "center" }}>
             Are you a restaurant?{" "}

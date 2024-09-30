@@ -29,5 +29,6 @@ export const paths = {
   pizza: {
     popular: "/pizzas/popular",
     create: "/pizzas",
+    get: "/pizzas",
   },
 };

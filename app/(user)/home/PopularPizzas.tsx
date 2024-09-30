@@ -54,6 +54,7 @@ const PopularPizzas = () => {
       >
         {data?.data?.map((pizza) => (
           <PizzaCard
+            id={pizza.id}
             key={pizza.id}
             image={pizza.pizzaCover}
             name={pizza.name}
