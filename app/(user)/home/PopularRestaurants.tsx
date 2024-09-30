@@ -2,9 +2,10 @@
 
 import RestaurantCard from "@/components/ui/RestaurantCard";
 import React from "react";
+import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-const PopularRestaurants: React.FC = () => {
+const PopularRestaurants = () => {
   const restaurantData = [
     {
       restaurantName: "Azmera Pizza",
@@ -45,17 +46,9 @@ const PopularRestaurants: React.FC = () => {
 
   return (
     <Swiper
-      spaceBetween={20}
+      modules={[Navigation, Pagination, Scrollbar, A11y]}
       slidesPerView={2}
-      loop={true}
-      breakpoints={{
-        640: {
-          slidesPerView: 2,
-        },
-        1024: {
-          slidesPerView: 2,
-        },
-      }}
+      pagination={{ clickable: true }}
     >
       {restaurantData.map((restaurant, index) => (
         <SwiperSlide key={index}>

@@ -1,11 +1,15 @@
-import { signInSchema, signUpSchema } from "@/schmas/auth";
+import {
+  signInSchema,
+  signUpSchema,
+  registerRestaurantUserSchema,
+} from "@/schmas/auth";
 import { apiRoutes } from "../apiRoutes";
 import { z } from "zod";
 import { api } from "@/lib/api";
 import {
   SignInRespose,
   SignUpRestaurantResponse,
-  SignUpResponse
+  SignUpResponse,
 } from "@/services/types/auth.type";
 
 export const signIn = async (signInBody: z.infer<typeof signInSchema>) => {
@@ -25,10 +29,18 @@ export const signUpRestaurant = async (signUpBody: FormData) => {
   );
   return res;
 };
+
 export const signUp = async (signUpBody: z.infer<typeof signUpSchema>) => {
+  const res = await api.post<SignUpResponse>(apiRoutes.auth.signUp, signUpBody);
+  return res;
+};
+
+export const registerRestaurantUser = async (
+  registerBody: z.infer<typeof registerRestaurantUserSchema>,
+) => {
   const res = await api.post<SignUpResponse>(
-    apiRoutes.auth.signUp,
-    signUpBody,
+    apiRoutes.auth.registerRestaurantUser,
+    registerBody,
   );
   return res;
 };

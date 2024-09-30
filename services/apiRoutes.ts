@@ -3,5 +3,6 @@ export const apiRoutes = {
     logIn: "/auth/login",
     signUp: "/auth/register",
     signUpRestaurant: "/auth/register-restaurant",
+    registerRestaurantUser: "/auth/register-restaurant-user",
   },
 };

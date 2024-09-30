@@ -1,5 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
-import { signIn, signUp, signUpRestaurant } from "../api/auth.service";
+import {
+  signIn,
+  signUp,
+  signUpRestaurant,
+  registerRestaurantUser,
+} from "../api/auth.service";
 
 export const useSignIn = () =>
   useMutation({
@@ -17,4 +22,10 @@ export const useSignUpRestaurant = () =>
   useMutation({
     mutationKey: ["signUpRestaurant"],
     mutationFn: signUpRestaurant,
+  });
+
+export const useRegisterRestaurantUser = () =>
+  useMutation({
+    mutationKey: ["registerRestaurantUser"],
+    mutationFn: registerRestaurantUser,
   });

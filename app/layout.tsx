@@ -7,7 +7,11 @@ import ThemeProvider from "@mui/material/styles/ThemeProvider";
 import TanstackProvider from "@/providers/TanstackProvider";
 import ToastProvider from "@/providers/ToastProvider";
 import { AuthProvider } from "@/providers/AuthProvider";
+
 import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/scrollbar";
 
 const inter = Inter({ subsets: ["latin"] });
 const roboto = Roboto({

@@ -70,3 +70,12 @@ export const signUpRestaurantSchema = zfd
   .refine((value) => value.password === value.confirmPassword, {
     message: "Passwords do not match",
   });
+
+export const registerRestaurantUserSchema = zod.object({
+  firstName: zod.string(),
+  lastName: zod.string(),
+  email: zod.string().email(),
+  phoneNumber: zod.string().min(10),
+  password: zod.string().min(8),
+  role: zod.number().min(1),
+});
