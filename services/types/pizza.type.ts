@@ -1,9 +1,13 @@
-interface Pizza {
-  id: string;
+export interface PopularPizza {
+  id: number;
   name: string;
-  cover: string;
-  toppings: string[];
   price: number;
+  pizzaCover: string;
+  toppings: string[];
+  restaurant: {
+    logo: string;
+    name: string;
+  };
 }
 
-type GetPizzasResponse = Pizza[];
+export type GetPopularPizzasResponse = PopularPizza[];

@@ -18,21 +18,22 @@ const Hero = () => {
       sx={{
         backgroundImage:
           "linear-gradient(180deg, #FFFFFF 0%, #FFC993 76%, #FFF8F1 100%)",
-        height: "700px",
+        height: "720px",
         overflowX: "hidden",
       }}
       position={"relative"}
     >
-      <Navbar />
       <Stack
         direction={"row"}
         alignItems={"center"}
         justifyContent={"space-between"}
-        padding={"40px"}
+        paddingLeft={"40px"}
       >
         <Box
           sx={{
             maxWidth: { xs: "600px", sm: "400px", md: "600px", lg: "50%" },
+            paddingTop: { xs: "50px" },
+            paddingLeft: { lg: "50px" },
           }}
         >
           <Typography
@@ -98,19 +99,33 @@ const Hero = () => {
 
         <Box
           component="img"
-          src="/pizzaHero.png"
+          src="/pizzaHeroTrim.png"
           alt="Pizza"
+          alignSelf={"end"}
           sx={{
             display: { xs: "none", sm: "block" },
-            height: { xs: "700px", md: "700px" },
-            width: { xs: "700px", md: "800px", lg: "850px" },
-            borderRadius: "50%",
-            objectFit: "cover",
+            height: { xs: "500px", md: "600px" },
+            width: { xs: "200px", md: "300px", lg: "350px" },
             zIndex: 1,
             position: "absolute",
-            top: "50px",
-            right: { xs: "-300px", sm: "-415px", md: "-430px" },
-            transform: "rotate(270deg)",
+            right: 0,
+            top: "80px",
+          }}
+        />
+
+        <Box
+          component="img"
+          src="/heroLeaf.png"
+          alt="Pizza"
+          alignSelf={"end"}
+          sx={{
+            display: { xs: "none", sm: "block" },
+            height: { xs: "200px", md: "200px" },
+            width: { xs: "200px", lg: "200px" },
+            zIndex: 1,
+            position: "absolute",
+            right: { xs: "30px", md: "150px", lg: "350px" },
+            top: "120px",
           }}
         />
       </Stack>

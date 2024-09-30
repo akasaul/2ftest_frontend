@@ -52,7 +52,7 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
       >
         <CardContent>
           <Grid container spacing={2} alignItems="center">
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={6}>
               <Stack gap={2}>
                 <Stack direction="row" gap={2} alignItems="center">
                   <Avatar
@@ -70,7 +70,7 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
               </Stack>
             </Grid>
 
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={6}>
               <OrderBox>
                 <Stack direction="row" gap={2}>
                   <Box

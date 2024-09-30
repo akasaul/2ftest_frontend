@@ -5,29 +5,17 @@ import {
   Box,
   CardMedia,
   Typography,
-  Button,
-  Avatar,
-  CardActions,
   Stack,
 } from "@mui/material";
 
-interface PizzaCardProps {
+interface OrderCardProps {
   image: string;
   name: string;
   description: string;
   price: number;
-  restaurantName: string;
-  restaurantImage: string;
 }
 
-const PizzaCard = ({
-  image,
-  name,
-  description,
-  price,
-  restaurantName,
-  restaurantImage,
-}: PizzaCardProps) => {
+const OrderCard = ({ image, name, description, price }: OrderCardProps) => {
   return (
     <Card
       sx={{
@@ -92,58 +80,10 @@ const PizzaCard = ({
           >
             {price}
           </Typography>
-
-          <Button
-            variant={"contained"}
-            sx={{
-              flex: 3,
-              borderRadius: "10px",
-              textTransform: "none",
-              fontSize: "24px",
-              height: "48px",
-              fontWeight: 700,
-              letterSpacing: "0.03em",
-              textAlign: "left",
-            }}
-          >
-            Order
-          </Button>
         </Stack>
       </CardContent>
-
-      <CardActions
-        sx={{
-          borderTop: "2px solid rgba(0, 0, 0, 0.1)",
-        }}
-      >
-        <Stack
-          direction={"row"}
-          alignItems={"center"}
-          justifyContent={"space-between"}
-          width={"100%"}
-          marginY={"10px"}
-        >
-          <Avatar
-            sx={{
-              width: "65px",
-              height: "65px",
-            }}
-            alt={restaurantName}
-            src={restaurantImage}
-          />
-          <Typography
-            variant="h5"
-            sx={{
-              opacity: 0.7,
-            }}
-            fontWeight={700}
-          >
-            {restaurantName}
-          </Typography>
-        </Stack>
-      </CardActions>
     </Card>
   );
 };
 
-export default PizzaCard;
+export default OrderCard;

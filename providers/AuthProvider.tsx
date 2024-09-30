@@ -45,20 +45,20 @@ const useAuthProvider = () => {
     }
   }, []);
 
-  useEffect(() => {
-    if (authState.isLoading) {
-      return;
-    }
-    if (authState.isLoggedIn) {
-      if (authState.view === "restaurant") {
-        router.replace(paths.owner.dashboard);
-      } else {
-        router.replace(paths.user.home);
-      }
-    } else {
-      router.replace(paths.auth.signIn);
-    }
-  }, [authState.isLoggedIn, authState.isLoading, router]);
+  // useEffect(() => {
+  //   if (authState.isLoading) {
+  //     return;
+  //   }
+  //   if (authState.isLoggedIn) {
+  //     if (authState.view === "restaurant") {
+  //       router.replace(paths.owner.dashboard);
+  //     } else {
+  //       router.replace(paths.user.home);
+  //     }
+  //   } else {
+  //     router.replace(paths.auth.signIn);
+  //   }
+  // }, [authState.isLoggedIn, authState.isLoading, router]);
 
   const login = (token: string, view: string) => {
     localStorage.setItem("token", token);
@@ -94,7 +94,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
 };
 
-// Custom hook to use the AuthContext in components
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {

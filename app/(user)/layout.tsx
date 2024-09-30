@@ -1,3 +1,4 @@
+import Navbar from "@/components/ui/Navbar";
 import React from "react";
 
 interface Props {
@@ -5,7 +6,12 @@ interface Props {
 }
 
 const UserLayout = ({ children }: Props) => {
-  return <div>{children}</div>;
+  return (
+    <div>
+      <Navbar />
+      {children}
+    </div>
+  );
 };
 
 export default UserLayout;

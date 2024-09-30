@@ -2,6 +2,7 @@ import { paths } from "@/paths";
 import { api } from "@/lib/api";
 import { z } from "zod";
 import { createOrderSchema } from "@/schmas/order.schema";
+import { GetMyOrders as GetMyOrdersResponse } from "../types/order.type";
 
 export const createOrders = async (
   orderBody: z.infer<typeof createOrderSchema>,
@@ -29,7 +30,7 @@ export const getOrders = async () => {
 };
 
 export const getMyOrders = async () => {
-  const response = await api.get(paths.order.my);
+  const response = await api.get<GetMyOrdersResponse>(paths.order.my);
   return response;
 };
 

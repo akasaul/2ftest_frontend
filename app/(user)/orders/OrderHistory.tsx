@@ -1,13 +1,14 @@
 "use client";
 
-import { useGetPopularPizzas } from "@/services/queries/pizza.query";
 import PizzaCard from "@/components/ui/PizzaCard";
 import { Box, Stack, Typography, useTheme } from "@mui/material";
 import PizzaLoader from "@/components/ui/Loader";
+import { useGetMyOrders } from "@/services/queries/order.query";
+import OrderCard from "./OrderCard";
 
-const PopularPizzas = () => {
+const OrderHistory = () => {
   const theme = useTheme();
-  const { data, isLoading } = useGetPopularPizzas();
+  const { data, isLoading } = useGetMyOrders();
   return (
     <Stack
       sx={{
@@ -28,7 +29,7 @@ const PopularPizzas = () => {
           },
         }}
       >
-        Popular Pizzas
+        Order History
       </Typography>
       {isLoading && (
         <Box
@@ -53,14 +54,12 @@ const PopularPizzas = () => {
         }}
       >
         {data?.data?.map((pizza) => (
-          <PizzaCard
+          <OrderCard
             key={pizza.id}
             image={pizza.pizzaCover}
-            name={pizza.name}
+            name={pizza.pizzaName}
             description={pizza.toppings.join(", ")}
             price={pizza.price}
-            restaurantName={pizza.restaurant.name}
-            restaurantImage={pizza.restaurant.logo}
           />
         ))}
       </Box>
@@ -68,4 +67,4 @@ const PopularPizzas = () => {
   );
 };
 
-export default PopularPizzas;
+export default OrderHistory;
