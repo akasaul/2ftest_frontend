@@ -2,6 +2,7 @@ import React from "react";
 import {
   Card,
   CardContent,
+  Box,
   CardMedia,
   Typography,
   Button,
@@ -19,24 +20,50 @@ interface PizzaCardProps {
   restaurantImage: string;
 }
 
-const PizzaCard: React.FC<PizzaCardProps> = ({
+const PizzaCard = ({
   image,
   name,
   description,
   price,
   restaurantName,
   restaurantImage,
-}) => {
+}: PizzaCardProps) => {
   return (
     <Card
       sx={{
         background: "#fff",
         borderRadius: "25px",
         padding: "20px",
+        boxShadow: "0px 5px 10px rgba(0, 0, 0, 0.05)",
+        position: "relative",
       }}
       elevation={0}
     >
-      <CardMedia component="img" image={image} alt={name} />
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "#EA810033",
+          borderRadius: "50%",
+          maxWidth: "300px",
+          maxHeight: "300px",
+          mx: "auto",
+        }}
+      >
+        <CardMedia
+          component="img"
+          image={image}
+          alt={name}
+          sx={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            borderRadius: "50%",
+          }}
+        />
+      </Box>
+
       <CardContent>
         <Typography variant="h4" fontWeight={700}>
           {name}
@@ -79,9 +106,10 @@ const PizzaCard: React.FC<PizzaCardProps> = ({
           </Button>
         </Stack>
       </CardContent>
+
       <CardActions
         sx={{
-          borderTop: "2px solid rgba(0, 0, 0, 0.2)",
+          borderTop: "2px solid rgba(0, 0, 0, 0.1)",
         }}
       >
         <Stack

@@ -1,14 +1,15 @@
 import React from "react";
-import { Box, Button, Typography, Stack } from "@mui/material";
+import { Box, Button, Typography, Stack, useTheme } from "@mui/material";
 
 const FeaturedCard = () => {
   return (
     <Box
       sx={{
         display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        paddingInline: "50px",
+        flexDirection: { xs: "column", sm: "row" },
+        alignItems: { xs: "start", sm: "center" },
+        justifyContent: { sm: "space-between" },
+        paddingInline: { xs: "10px", sm: "50px" },
         paddingBlock: "30px",
         backgroundColor: "#2F2F2F",
         borderRadius: "40px",
@@ -17,10 +18,10 @@ const FeaturedCard = () => {
         position: "relative",
       }}
     >
-      <Box sx={{ maxWidth: "50%", zIndex: 1 }}>
+      <Box sx={{ maxWidth: { sm: "50%" }, zIndex: 1 }}>
         <Stack spacing={4} direction="column" alignItems="start">
           <Box>
-            <Typography variant="h3" fontWeight="bold">
+            <Typography fontWeight="bold" variant="h3">
               Make Your First Order
             </Typography>
 
@@ -44,7 +45,7 @@ const FeaturedCard = () => {
               width: "200px",
             }}
           >
-            <Typography fontSize="20px" fontWeight="bold">
+            <Typography variant={"h5"} fontWeight="bold">
               Order Now
             </Typography>
           </Button>
@@ -56,10 +57,11 @@ const FeaturedCard = () => {
         src="/vipPIzza.png"
         alt="Pizza"
         sx={{
+          display: { xs: "none", sm: "block" },
           height: "150%",
           borderRadius: "50%",
           position: "absolute",
-          right: "-100px",
+          right: { sm: "-300px", lg: "-100px" },
           objectFit: "contain",
           marginLeft: "20px",
           zIndex: 1,

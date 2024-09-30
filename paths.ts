@@ -8,6 +8,10 @@ export const paths = {
   order: {
     create: "/orders",
     update: "/orders",
+    get: "/orders",
+    my: "/orders/my",
+    restaurantOrders: "/orders/restaurant",
+    details: "/orders",
   },
   owner: {
     dashboard: "/my-books",

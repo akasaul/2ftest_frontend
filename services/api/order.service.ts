@@ -22,3 +22,23 @@ export const updateOrders = async (updateOrderBody: UpdateOrdersBody) => {
   );
   return response;
 };
+
+export const getOrders = async () => {
+  const response = await api.get(paths.order.get);
+  return response;
+};
+
+export const getMyOrders = async () => {
+  const response = await api.get(paths.order.my);
+  return response;
+};
+
+export const getRestaurantOrders = async () => {
+  const response = await api.get(paths.order.restaurantOrders);
+  return response;
+};
+
+export const getRestaurantDetails = async (id: string) => {
+  const response = await api.get(`${paths.order.details}/${id}`);
+  return response;
+};

@@ -3,14 +3,16 @@ import PopularPizzas from "./PopularPizzas";
 import PopularRestaurants from "./PopularRestaurants";
 import FeaturedPizzas from "./FeaturedPizzas";
 import Hero from "./Hero";
+import Footer from "./Footer";
 
 const Home = () => {
   return (
     <Box bgcolor={"#FFF8F1"} height={"100vh"}>
-      {/* <Hero /> */}
-      {/* {/* <FeaturedPizzas /> */}
+      <Hero />
+      <FeaturedPizzas />
       <PopularRestaurants />
-      {/* <PopularPizzas /> */}
+      <PopularPizzas />
+      <Footer />
     </Box>
   );
 };

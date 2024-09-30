@@ -2,7 +2,9 @@
 
 import RestaurantCard from "@/components/ui/RestaurantCard";
 import React from "react";
-import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
+import { Navigation, A11y } from "swiper/modules";
+
+import { Box, Typography } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 const PopularRestaurants = () => {
@@ -45,22 +47,39 @@ const PopularRestaurants = () => {
   ];
 
   return (
-    <Swiper
-      modules={[Navigation, Pagination, Scrollbar, A11y]}
-      slidesPerView={2}
-      pagination={{ clickable: true }}
+    <Box
+      padding={"50px"}
+      sx={{
+        background:
+          "linear-gradient(180deg, rgba(250, 126, 0, 0) 0%, rgba(250, 126, 0, 0.2) 60.5%, rgba(148, 74, 0, 0) 100%)",
+      }}
+      position={"relative"}
     >
-      {restaurantData.map((restaurant, index) => (
-        <SwiperSlide key={index}>
-          <RestaurantCard
-            restaurantName={restaurant.restaurantName}
-            restaurantImage={restaurant.restaurantImage}
-            description={restaurant.description}
-            numberOfOrders={restaurant.numberOfOrders}
-          />
-        </SwiperSlide>
-      ))}
-    </Swiper>
+      <Typography
+        variant="h2"
+        marginBottom={"30px"}
+        fontWeight={500}
+        sx={{ opacity: 0.5 }}
+      >
+        Top Restaurants
+      </Typography>
+      <Swiper
+        modules={[Navigation, A11y]}
+        slidesPerView={2}
+        pagination={{ clickable: true }}
+      >
+        {restaurantData.map((restaurant, index) => (
+          <SwiperSlide key={index}>
+            <RestaurantCard
+              restaurantName={restaurant.restaurantName}
+              restaurantImage={restaurant.restaurantImage}
+              description={restaurant.description}
+              numberOfOrders={restaurant.numberOfOrders}
+            />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </Box>
   );
 };
 

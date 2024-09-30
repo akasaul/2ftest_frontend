@@ -1,6 +1,6 @@
 import { paths } from "@/paths";
 import { api } from "@/lib/api";
-import { GetPizzasResponse } from "@/services/types/pizza.type";
+import { GetPizzasResponse } from "@/services/types/pizza";
 import { z } from "zod";
 import { createPizzaSchema } from "@/schmas/pizza.schema";
 

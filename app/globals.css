@@ -13,3 +13,16 @@ body {
 
 @layer utilities {
 }
+
+.swiper-pagination {
+  .swiper-pagination-bullet {
+    background: #b6b6b6;
+    width: 20px;
+    height: 20px;
+    opacity: 1;
+    margin-inline: 10px;
+  }
+  .swiper-pagination-bullet-active {
+    background-color: #ff9921;
+  }
+}

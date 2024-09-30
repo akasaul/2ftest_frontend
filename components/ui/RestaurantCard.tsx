@@ -34,7 +34,12 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
   numberOfOrders,
 }) => {
   return (
-    <Box display="flex" justifyContent="center">
+    <Box
+      display="flex"
+      justifyContent="center"
+      marginInline={"15px"}
+      boxShadow={"0 4px 12px rgba(0,0,0,0.1)"}
+    >
       <Card
         elevation={0}
         sx={{
