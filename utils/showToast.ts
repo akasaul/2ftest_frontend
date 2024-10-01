@@ -12,7 +12,13 @@ export const defaultToastOptions: ToastOptions = {
   transition: Slide,
 };
 
-type ToastType = "success" | "error" | "info" | "warning" | "default";
+type ToastType =
+  | "success"
+  | "error"
+  | "info"
+  | "warning"
+  | "default"
+  | "loading";
 
 export const showToast = (
   type: ToastType,
@@ -24,6 +30,8 @@ export const showToast = (
   switch (type) {
     case "success":
       return toast.success(content, optionsToApply);
+    case "loading":
+      return toast.loading(content, optionsToApply);
     case "error":
       return toast.error(content, optionsToApply);
     case "info":

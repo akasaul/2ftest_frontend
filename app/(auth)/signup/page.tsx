@@ -24,6 +24,9 @@ import { useAuth } from "@/providers/AuthProvider";
 import { signUpSchema } from "@/schmas/auth";
 import { paths } from "@/paths";
 import { useSignUp } from "@/services/mutations/auth.mutations";
+import { showToast } from "@/utils/showToast";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 type Values = zod.infer<typeof signUpSchema>;
 
@@ -38,13 +41,41 @@ const SignUp = () => {
     formState: { errors },
   } = useForm<Values>({ resolver: zodResolver(signUpSchema) });
 
-  const { isPending, isError, error, mutateAsync: signUp } = useSignUp();
+  const {
+    isPending,
+    isSuccess,
+    isError,
+    error,
+    mutateAsync: signUp,
+  } = useSignUp();
   const { login } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    let tId;
+    if (isPending) {
+      tId = showToast("loading", "Logging you in");
+    } else {
+      toast.dismiss(tId)
+    }
+
+    if (isError) {
+      (error as any).response.data.errors.map((err: string) => {
+        showToast("error", err, {});
+      });
+    }
+
+    if (isSuccess) {
+      showToast("success", "Succesfully registered", {});
+    }
+  }, [isPending, isError, isSuccess, error]);
 
   const onSubmit = async (values: Values) => {
     const { data } = await signUp(values);
     login(data.user.token, "customer");
-  };
+    router.push(paths.user.home);
+  }
+    
 
   return (
     <Stack spacing={3}>

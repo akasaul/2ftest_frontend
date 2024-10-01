@@ -7,7 +7,7 @@ import { useGetPizzaDetails } from "@/services/queries/pizza.query";
 import PizzaLoader from "@/components/ui/Loader";
 
 const MenuDetails = ({ params: { id } }: { params: { id: number } }) => {
-  const { data, isLoading } = useGetPizzaDetails(id);
+  const { data,  isFetched } = useGetPizzaDetails(id);
   return (
     <Box sx={{ p: 5 }}>
       <Stack
@@ -29,7 +29,7 @@ const MenuDetails = ({ params: { id } }: { params: { id: number } }) => {
         </Stack>
 
         <Stack sx={{ flex: 2 }}>
-          {!isLoading && data?.data ? (
+          {isFetched && data?.data ? (
             <OrderPizza pizzaDetails={data.data} />
           ) : (
             <PizzaLoader />

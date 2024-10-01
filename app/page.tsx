@@ -1,6 +1,12 @@
+"use client";
+
+import { paths } from "@/paths";
 import { Typography } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
+  router.push(paths.user.home);
   return (
     <main>
       <Typography

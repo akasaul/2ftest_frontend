@@ -59,7 +59,10 @@ const OrderHistory = () => {
             key={pizza.id}
             image={pizza.pizzaCover}
             name={pizza.pizzaName}
-            description={pizza.toppings.join(", ")}
+            status={pizza.status}
+            description={pizza.toppings
+              .map((topping) => topping.name)
+              .join(", ")}
             price={pizza.price}
           />
         ))}

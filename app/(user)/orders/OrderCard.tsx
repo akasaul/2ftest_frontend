@@ -13,9 +13,16 @@ interface OrderCardProps {
   name: string;
   description: string;
   price: number;
+  status: string;
 }
 
-const OrderCard = ({ image, name, description, price }: OrderCardProps) => {
+const OrderCard = ({
+  image,
+  name,
+  description,
+  price,
+  status,
+}: OrderCardProps) => {
   return (
     <Card
       sx={{
@@ -79,6 +86,15 @@ const OrderCard = ({ image, name, description, price }: OrderCardProps) => {
             color={"textSecondaryChannel"}
           >
             {price}
+          </Typography>
+          <Typography
+            variant="h4"
+            flex={3}
+            fontWeight={600}
+            color={"textSecondaryChannel"}
+            sx={{ textTransform: "capitalize" }}
+          >
+            {status.toLowerCase()}
           </Typography>
         </Stack>
       </CardContent>

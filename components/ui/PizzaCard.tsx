@@ -13,6 +13,7 @@ import {
   Stack,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
+import { paths } from "@/paths";
 
 interface PizzaCardProps {
   id: number;
@@ -111,7 +112,7 @@ const PizzaCard = ({
               letterSpacing: "0.03em",
               textAlign: "left",
             }}
-            onClick={() => router.push(`/menus/${id}`)}
+            onClick={() => router.push(`/${paths.menus}/${id}`)}
           >
             Order
           </Button>

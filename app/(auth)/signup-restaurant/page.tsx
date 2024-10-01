@@ -23,11 +23,14 @@ import { useAuth } from "@/providers/AuthProvider";
 
 import { signUpRestaurantSchema } from "@/schmas/auth";
 import { paths } from "@/paths";
+import { useEffect } from "react";
+import { showToast } from "@/utils/showToast";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 type Values = zod.infer<typeof signUpRestaurantSchema>;
 
 const SignUpRestaurant = () => {
-  const [isPending] = React.useState<boolean>(false);
   const [showPassword, setShowPassword] = React.useState<boolean>();
   const [showConfirmPassword, setShowConfirmPassword] =
     React.useState<boolean>();
@@ -41,6 +44,8 @@ const SignUpRestaurant = () => {
     resolver: zodResolver(signUpRestaurantSchema),
   });
 
+  const router = useRouter()
+
   const VisuallyHiddenInput = styled("input")({
     clip: "rect(0 0 0 0)",
     clipPath: "inset(50%)",
@@ -53,9 +58,30 @@ const SignUpRestaurant = () => {
     width: 1,
   });
 
-  const { mutateAsync: signUpRestaurant } = useSignUpRestaurant();
+  const { mutateAsync: signUpRestaurant, isError, error, isSuccess, isPending } = useSignUpRestaurant();
 
   const { login } = useAuth();
+
+  useEffect(() => {
+    let tId;
+    if (isPending) {
+      tId = showToast("loading", "Logging you in");
+    } else {
+      toast.dismiss(tId)
+    }
+
+    if (isError) {
+      (error as any).response.data.errors.map((err: string) => {
+        showToast("error", err, {});
+      });
+    }
+
+    if (isSuccess) {
+      showToast("success", "Succesfully registered", {});
+    }
+  }, [isPending, isError, isSuccess, error]);
+
+
 
   const onSubmit = async (values: Values) => {
     const formData = new FormData();
@@ -72,7 +98,10 @@ const SignUpRestaurant = () => {
       data: { user },
     } = await signUpRestaurant(formData);
     login(user.user.token, "restaurant");
+    router.push(paths.owner.dashboard)
   };
+
+
 
   return (
     <Stack spacing={3}>

@@ -5,6 +5,7 @@ export interface MyOrder {
   toppings: MyOrderTopping[];
   price: number;
   qty: number;
+  status: string;
 }
 
 interface MyOrderTopping {

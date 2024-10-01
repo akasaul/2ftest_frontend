@@ -1,5 +1,5 @@
 export const paths = {
-  home: "/",
+  home: "/home",
   auth: {
     signIn: "/login",
     signUp: "/signup",
@@ -14,7 +14,10 @@ export const paths = {
     details: "/orders",
   },
   owner: {
-    dashboard: "/my-books",
+    dashboard: "/dashboard",
+  },
+  menus: {
+    home: "/menus",
   },
   role: {
     create: "/roles/",

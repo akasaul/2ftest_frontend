@@ -6,7 +6,8 @@ import { usePathname } from "next/navigation";
 
 const Navbar = () => {
   const path = usePathname();
-  const { isLoggedIn, isLoading } = useAuth();
+  const { isLoggedIn, isLoading, logout } = useAuth();
+
   return (
     <Box
       component="nav"
@@ -58,13 +59,20 @@ const Navbar = () => {
         </Link>
       </Stack>
       {!isLoading && isLoggedIn ? (
-        <Button type="submit" variant="contained" sx={{ height: "42px" }}>
+        <Button
+          type="submit"
+          variant="contained"
+          sx={{ height: "42px" }}
+          onClick={logout}
+        >
           Logout
         </Button>
       ) : (
-        <Button type="submit" variant="contained" sx={{ height: "42px" }}>
-          Register
-        </Button>
+        <Link href={'/signup'}>
+          <Button type="submit" variant="contained" sx={{ height: "42px" }}>
+            Register
+          </Button>
+        </Link>
       )}
     </Box>
   );

@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { paths } from "@/paths";
 
 interface AuthState {
   isLoggedIn: boolean;
@@ -67,6 +68,8 @@ const useAuthProvider = () => {
       view,
       isLoading: false,
     });
+
+    view === "customer" ? router.push(paths.user.home) : router.push(paths.owner.dashboard);
   };
 
   const logout = () => {
@@ -77,6 +80,7 @@ const useAuthProvider = () => {
       view: null,
       isLoading: false,
     });
+    router.push(paths.user.home);
   };
 
   return {
@@ -86,7 +90,6 @@ const useAuthProvider = () => {
   };
 };
 
-// The provider component that wraps around your application
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const auth = useAuthProvider();
 

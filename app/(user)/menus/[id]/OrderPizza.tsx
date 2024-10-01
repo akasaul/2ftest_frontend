@@ -15,9 +15,14 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { GetPizzaDetailsResponse, PizzaDetailsTopping } from "@/services/types/pizza.type";
+import {
+  GetPizzaDetailsResponse,
+  PizzaDetailsTopping,
+} from "@/services/types/pizza.type";
+import { useCreateOrders } from "@/services/mutations/order.mutations";
+import { showToast } from "@/utils/showToast";
 
-const pizzaSchema = z.object({
+const orderSchema = z.object({
   toppings: z.array(z.number()).min(1, "Please select at least one topping"),
   quantity: z
     .number()
@@ -25,15 +30,7 @@ const pizzaSchema = z.object({
     .max(10, "You cannot order more than 10 pizzas"),
 });
 
-type PizzaFormData = z.infer<typeof pizzaSchema>;
-
-const toppingsFromBackend = [
-  { name: "Mozzarella", id: 1, isSelected: true },
-  { name: "Tomato", id: 2 },
-  { name: "Bell Peppers", id: 3 },
-  { name: "Onions", id: 4 },
-  { name: "Olives", id: 5 },
-];
+type OrderFormData = z.infer<typeof orderSchema>;
 
 interface OrderPizzaProps {
   pizzaDetails: GetPizzaDetailsResponse;
@@ -41,14 +38,16 @@ interface OrderPizzaProps {
 
 const OrderPizza = ({ pizzaDetails }: OrderPizzaProps) => {
   const [price] = useState(150);
+  const { mutateAsync: orderPizza, isPending } = useCreateOrders();
+
   const {
     control,
     handleSubmit,
     setValue,
     watch,
     formState: { errors },
-  } = useForm<PizzaFormData>({
-    resolver: zodResolver(pizzaSchema),
+  } = useForm<OrderFormData>({
+    resolver: zodResolver(orderSchema),
     defaultValues: {
       toppings: pizzaDetails.toppings
         .filter((topping) => topping.isDefault)
@@ -57,8 +56,18 @@ const OrderPizza = ({ pizzaDetails }: OrderPizzaProps) => {
     },
   });
 
-  const onSubmit = (data: PizzaFormData) => {
-    console.log("Order submitted", data);
+  const onSubmit = async (data: OrderFormData) => {
+    const defaultToppings = pizzaDetails.toppings
+      .filter((order) => order.isDefault)
+      .map((topping) => topping.id);
+    await orderPizza({
+      qty: data.quantity,
+      additionalToppings: data.toppings.filter((topping) =>
+        defaultToppings.includes(topping),
+      ),
+      pizzaId: pizzaDetails.id,
+    });
+    showToast('success', 'Succesfully ordered pizza!')
   };
 
   const quantity = watch("quantity");
@@ -79,30 +88,37 @@ const OrderPizza = ({ pizzaDetails }: OrderPizzaProps) => {
   return (
     <Box sx={{ padding: "20px" }}>
       <Typography
-        sx={{ fontSize: "70px", fontWeight: "700", marginBottom: "30px" }}
+        sx={{
+          fontSize: "60px",
+          lineHeight: 1.2,
+          fontWeight: "700",
+          marginBottom: "30px",
+        }}
       >
-        Margherita
+        {pizzaDetails.name}
       </Typography>
 
       <Grid container spacing={1}>
-        {toppingsFromBackend.map((topping) => (
+        {pizzaDetails.toppings.map((topping) => (
           <Grid item xs={6} key={topping.id}>
             <Controller
               name="toppings"
               control={control}
-              render={({ field }) => (
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={field.value.includes(topping.id)}
-                      onChange={(e) =>
-                        handleToppingChange(topping.id, e.target.checked)
-                      }
-                    />
-                  }
-                  label={topping.name}
-                />
-              )}
+              render={({ field }) => {
+                return (
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={field.value.includes(topping.id)}
+                        onChange={(e) =>
+                          handleToppingChange(topping.id, e.target.checked)
+                        }
+                      />
+                    }
+                    label={topping.name}
+                  />
+                );
+              }}
             />
           </Grid>
         ))}
@@ -183,6 +199,7 @@ const OrderPizza = ({ pizzaDetails }: OrderPizzaProps) => {
           fontSize: "20px",
         }}
         disableElevation
+        disabled={isPending}
         onClick={handleSubmit(onSubmit)}
       >
         Order

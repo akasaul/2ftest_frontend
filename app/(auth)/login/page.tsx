@@ -47,7 +47,6 @@ const Login = () => {
   const onSubmit = async (values: Values): Promise<void> => {
     const { data } = await signIn(values);
     login(data.user.token, data.restaurantId ? "restaurant" : "customer");
-    // router.replace(paths.owner.myBooks);
   };
 
   return (
@@ -144,6 +143,16 @@ const Login = () => {
               underline="hover"
             >
               Sign up
+            </Link>
+          </Typography>
+          <Typography variant="body1" sx={{ textAlign: "center" }}>
+            Are you a restaurant?{" "}
+            <Link
+              component={RouterLink}
+              href={paths.auth.signUpRestaurant}
+              underline="hover"
+            >
+              Register
             </Link>
           </Typography>
         </Stack>
