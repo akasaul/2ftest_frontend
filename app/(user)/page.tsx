@@ -1,9 +1,9 @@
 import { Box } from "@mui/material";
-import PopularPizzas from "./PopularPizzas";
-import PopularRestaurants from "./PopularRestaurants";
-import FeaturedPizzas from "./FeaturedPizzas";
-import Hero from "./Hero";
-import Footer from "./Footer";
+import PopularPizzas from "./_components/PopularPizzas";
+import PopularRestaurants from "./_components/PopularRestaurants";
+import FeaturedPizzas from "./_components/FeaturedPizzas";
+import Hero from "./_components/Hero";
+import Footer from "./_components/Footer";
 
 const Home = () => {
   return (

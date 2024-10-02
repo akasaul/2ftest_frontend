@@ -45,21 +45,6 @@ const useAuthProvider = () => {
     }
   }, []);
 
-  // useEffect(() => {
-  //   if (authState.isLoading) {
-  //     return;
-  //   }
-  //   if (authState.isLoggedIn) {
-  //     if (authState.view === "restaurant") {
-  //       router.replace(paths.owner.dashboard);
-  //     } else {
-  //       router.replace(paths.user.home);
-  //     }
-  //   } else {
-  //     router.replace(paths.auth.signIn);
-  //   }
-  // }, [authState.isLoggedIn, authState.isLoading, router]);
-
   const login = (token: string, view: string) => {
     localStorage.setItem("token", token);
     localStorage.setItem("view", view);
@@ -69,7 +54,9 @@ const useAuthProvider = () => {
       isLoading: false,
     });
 
-    view === "customer" ? router.push(paths.user.home) : router.push(paths.owner.dashboard);
+    view === "customer"
+      ? router.push(paths.user.home)
+      : router.push(paths.owner.dashboard);
   };
 
   const logout = () => {

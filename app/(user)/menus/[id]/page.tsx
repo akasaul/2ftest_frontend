@@ -2,12 +2,12 @@
 import { Box, Stack } from "@mui/material";
 import React from "react";
 import OrderPizza from "./OrderPizza";
-import PopularPizzas from "../../home/PopularPizzas";
+import PopularPizzas from "../../_components/PopularPizzas";
 import { useGetPizzaDetails } from "@/services/queries/pizza.query";
 import PizzaLoader from "@/components/ui/Loader";
 
 const MenuDetails = ({ params: { id } }: { params: { id: number } }) => {
-  const { data,  isFetched } = useGetPizzaDetails(id);
+  const { data, isFetched } = useGetPizzaDetails(id);
   return (
     <Box sx={{ p: 5 }}>
       <Stack

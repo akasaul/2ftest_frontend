@@ -43,9 +43,6 @@ const theme = createTheme({
           default: "#fff",
           paper: "#fff",
         },
-        // text: {
-        //   secondary: "#01C550",
-        // },
         text: {
           secondaryChannel: "#01C550",
         },
@@ -65,6 +62,23 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           color: "#FDFFFE",
+        },
+      },
+    },
+
+    MuiListItemButton: {
+      styleOverrides: {
+        root: {
+          "&.Mui-selected": {
+            backgroundColor: "red",
+            color: "white",
+            "&:hover": {
+              backgroundColor: "darkred",
+            },
+            "& .MuiListItemIcon-root": {
+              color: "white", 
+            },
+          },
         },
       },
     },
