@@ -6,8 +6,11 @@ import { Navigation, A11y, Autoplay } from "swiper/modules";
 
 import { Box, Typography, useTheme } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { useGetTopRestaurants } from "@/services/queries/restuarants.query";
+import PizzaLoader from "@/components/ui/Loader";
 
 const PopularRestaurants = () => {
+  const { data, isLoading } = useGetTopRestaurants();
   const restaurantData = [
     {
       restaurantName: "Azmera Pizza",
@@ -74,33 +77,39 @@ const PopularRestaurants = () => {
       >
         Top Restaurants
       </Typography>
-      <Swiper
-        modules={[Navigation, A11y, Autoplay]}
-        autoplay={{ delay: 500, disableOnInteraction: false }}
-        breakpoints={{
-          0: {
-            slidesPerView: 1,
-          },
-          900: {
-            slidesPerView: 2,
-          },
-          1400: {
-            slidesPerView: 3,
-          },
-        }}
-        pagination={{ clickable: true }}
-      >
-        {restaurantData.map((restaurant, index) => (
-          <SwiperSlide key={index}>
-            <RestaurantCard
-              restaurantName={restaurant.restaurantName}
-              restaurantImage={restaurant.restaurantImage}
-              description={restaurant.description}
-              numberOfOrders={restaurant.numberOfOrders}
-            />
-          </SwiperSlide>
-        ))}
-      </Swiper>
+      {isLoading ? (
+        <PizzaLoader />
+      ) : (
+        <Swiper
+          modules={[Navigation, A11y, Autoplay]}
+          autoplay={{ delay: 500, disableOnInteraction: false }}
+          breakpoints={{
+            0: {
+              slidesPerView: 1,
+            },
+            900: {
+              slidesPerView: 2,
+            },
+            1400: {
+              slidesPerView: 3,
+            },
+          }}
+          pagination={{ clickable: true }}
+        >
+          {data?.data.map((restaurant, index) => (
+            <SwiperSlide key={index}>
+              <RestaurantCard
+                restaurantName={restaurant.name}
+                restaurantImage={restaurant.logo}
+                description={
+                  "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to..."
+                }
+                numberOfOrders={restaurant.orederCount}
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      )}
     </Box>
   );
 };

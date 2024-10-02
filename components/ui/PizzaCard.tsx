@@ -112,7 +112,7 @@ const PizzaCard = ({
               letterSpacing: "0.03em",
               textAlign: "left",
             }}
-            onClick={() => router.push(`/${paths.menus}/${id}`)}
+            onClick={() => router.push(`${paths.menus.home}/${id}`)}
           >
             Order
           </Button>

@@ -23,10 +23,8 @@ import { useAuth } from "@/providers/AuthProvider";
 
 import { signUpRestaurantSchema } from "@/schmas/auth";
 import { paths } from "@/paths";
-import { useEffect } from "react";
-import { showToast } from "@/utils/showToast";
-import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import useToast from "@/hooks/useToast";
 
 type Values = zod.infer<typeof signUpRestaurantSchema>;
 
@@ -62,26 +60,13 @@ const SignUpRestaurant = () => {
 
   const { login } = useAuth();
 
-  useEffect(() => {
-    let tId;
-    if (isPending) {
-      tId = showToast("loading", "Logging you in");
-    } else {
-      toast.dismiss(tId)
-    }
 
-    if (isError) {
-      (error as any).response.data.errors.map((err: string) => {
-        showToast("error", err, {});
-      });
-    }
-
-    if (isSuccess) {
-      showToast("success", "Succesfully registered", {});
-    }
-  }, [isPending, isError, isSuccess, error]);
-
-
+  useToast({
+    isLoading: isPending,
+    isSuccess,
+    isError,
+    errors: error && [(error as any).response.data],
+  });
 
   const onSubmit = async (values: Values) => {
     const formData = new FormData();

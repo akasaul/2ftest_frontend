@@ -23,6 +23,7 @@ import { signInSchema } from "@/schmas/auth";
 import { Checkbox, FormControlLabel } from "@mui/material";
 import { useSignIn } from "@/services/mutations/auth.mutations";
 import { useAuth } from "@/providers/AuthProvider";
+import useToast from "@/hooks/useToast";
 
 type Values = zod.infer<typeof signInSchema>;
 
@@ -40,9 +41,22 @@ const Login = () => {
     formState: { errors },
   } = useForm<Values>({ defaultValues, resolver: zodResolver(signInSchema) });
 
-  const { mutateAsync: signIn, isPending } = useSignIn();
+  const {
+    mutateAsync: signIn,
+    isPending,
+    error,
+    isError,
+    isSuccess,
+  } = useSignIn();
 
   const { login } = useAuth();
+
+  useToast({
+    isLoading: isPending,
+    isSuccess,
+    isError,
+    errors: error && [(error as any).response.data],
+  });
 
   const onSubmit = async (values: Values): Promise<void> => {
     const { data } = await signIn(values);

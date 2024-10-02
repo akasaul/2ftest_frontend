@@ -27,6 +27,7 @@ import { useSignUp } from "@/services/mutations/auth.mutations";
 import { showToast } from "@/utils/showToast";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
+import useToast from "@/hooks/useToast";
 
 type Values = zod.infer<typeof signUpSchema>;
 
@@ -51,24 +52,12 @@ const SignUp = () => {
   const { login } = useAuth();
   const router = useRouter();
 
-  useEffect(() => {
-    let tId;
-    if (isPending) {
-      tId = showToast("loading", "Logging you in");
-    } else {
-      toast.dismiss(tId)
-    }
-
-    if (isError) {
-      (error as any).response.data.errors.map((err: string) => {
-        showToast("error", err, {});
-      });
-    }
-
-    if (isSuccess) {
-      showToast("success", "Succesfully registered", {});
-    }
-  }, [isPending, isError, isSuccess, error]);
+  useToast({
+    isLoading: isPending,
+    isSuccess,
+    isError,
+    errors: error && [(error as any).response.data],
+  });
 
   const onSubmit = async (values: Values) => {
     const { data } = await signUp(values);

@@ -25,7 +25,8 @@ const Navbar = () => {
         display={"flex"}
         justifyContent={"space-between"}
         sx={{
-          minWidth: { xs: "400px" },
+          minWidth: { xs: "140px", sm: "250px", md: "350px" },
+          marginInline: "10px",
         }}
       >
         <Link href={"/"}>
@@ -47,16 +48,6 @@ const Navbar = () => {
             Orders
           </Typography>
         </Link>
-
-        <Link href={"/who-we-are"}>
-          <Typography
-            variant="h5"
-            fontWeight={path == "/who-we-are" ? 700 : 500}
-            color={path == "/who-we-are" ? "primary" : "#16120DBF"}
-          >
-            Who we are
-          </Typography>
-        </Link>
       </Stack>
       {!isLoading && isLoggedIn ? (
         <Button
@@ -68,7 +59,7 @@ const Navbar = () => {
           Logout
         </Button>
       ) : (
-        <Link href={'/signup'}>
+        <Link href={"/signup"}>
           <Button type="submit" variant="contained" sx={{ height: "42px" }}>
             Register
           </Button>

@@ -2,7 +2,11 @@ import { paths } from "@/paths";
 import { api } from "@/lib/api";
 import { z } from "zod";
 import { createOrderSchema } from "@/schmas/order.schema";
-import { GetMyOrders as GetMyOrdersResponse } from "../types/order.type";
+import {
+  GetMyOrders as GetMyOrdersResponse,
+  GetOrdersResponse,
+  OrderProps,
+} from "../types/order.type";
 
 export const createOrders = async (
   orderBody: z.infer<typeof createOrderSchema>,
@@ -24,8 +28,22 @@ export const updateOrders = async (updateOrderBody: UpdateOrdersBody) => {
   return response;
 };
 
-export const getOrders = async () => {
-  const response = await api.get(paths.order.get);
+export const getOrders = async ({
+  page,
+  limit,
+  status,
+  search,
+  toppings,
+}: OrderProps) => {
+  const response = await api.get<GetOrdersResponse>(paths.order.get, {
+    params: {
+      page,
+      limit,
+      status,
+      search,
+      toppings,
+    },
+  });
   return response;
 };
 

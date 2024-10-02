@@ -20,11 +20,15 @@ export const paths = {
     home: "/menus",
   },
   role: {
-    create: "/roles/",
+    get: "/",
+    create: "/roles",
     assign: "/roles/assign",
   },
   toppings: {
     create: "/toppings",
+  },
+  restuarants: {
+    top: "/restaurants/top",
   },
   user: {
     home: "/home",

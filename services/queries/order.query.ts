@@ -4,11 +4,12 @@ import {
   getMyOrders,
   getRestaurantOrders,
 } from "@/services/api/order.service";
+import { OrderProps } from "../types/order.type";
 
-export const useGetOrders = () =>
+export const useGetOrders = (orderProps: OrderProps) =>
   useQuery({
     queryKey: ["getOrders"],
-    queryFn: getOrders,
+    queryFn: () => getOrders(orderProps),
   });
 
 export const useGetMyOrders = () =>

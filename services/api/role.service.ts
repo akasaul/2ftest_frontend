@@ -6,6 +6,7 @@ import {
   assignRoleSchema,
   assignPermisionSchema,
 } from "@/schmas/role.schema";
+import { GetRoleProps, GetRolesResponse } from "../types/role.type";
 
 export const createRole = async (
   roleBody: z.infer<typeof createRoleSchema>,
@@ -38,5 +39,15 @@ export const assignPermissions = async (
   permissionsBody: z.infer<typeof assignPermisionSchema>,
 ) => {
   const response = await api.put(paths.role.assign, permissionsBody);
+  return response;
+};
+
+export const getRoles = async ({ page, limit }: GetRoleProps) => {
+  const response = await api.get<GetRolesResponse>(paths.role.get, {
+    params: {
+      limit,
+      page,
+    },
+  });
   return response;
 };
