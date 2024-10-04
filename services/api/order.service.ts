@@ -29,18 +29,18 @@ export const updateOrders = async (updateOrderBody: UpdateOrdersBody) => {
 };
 
 export const getOrders = async ({
-  page,
-  limit,
+  pageIndex,
+  pageSize,
+  globalFilter,
   status,
-  search,
   toppings,
 }: OrderProps) => {
-  const response = await api.get<GetOrdersResponse>(paths.order.get, {
+  const response = await api.get<GetOrdersResponse>(paths.order.restaurant, {
     params: {
-      page,
-      limit,
+      page: pageIndex + 1,
+      limit: pageSize,
+      search: globalFilter,
       status,
-      search,
       toppings,
     },
   });

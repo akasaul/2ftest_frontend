@@ -3,13 +3,15 @@ import { useState } from "react";
 
 interface Props {
   isActive: boolean;
+  onActivityChange: (isActive: boolean) => Promise<void>;
 }
 
-const ActivitySwitcher = ({ isActive }: Props) => {
+const ActivitySwitcher = ({ isActive, onActivityChange }: Props) => {
   const [active, setActive] = useState(isActive);
 
   const handleToggle = () => {
     setActive(!active);
+    onActivityChange(!active);
   };
 
   return (
@@ -19,20 +21,24 @@ const ActivitySwitcher = ({ isActive }: Props) => {
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: active ? "#E8F5E9" : "#f5f5f5",
-        borderRadius: "20px",
-        padding: "5px 10px",
+        borderRadius: "30px",
+        padding: "10px 35px",
+        maxWidth: "150px",
       }}
     >
       <Typography
         sx={{
-          fontWeight: "bold",
-          color: active ? "green" : "#BDBDBD",
-          marginRight: "8px",
+          color: active ? "#008000" : "#BDBDBD",
         }}
       >
         {active ? "Active" : "Inactive"}
       </Typography>
-      <Switch checked={active} onChange={handleToggle} color="success" />
+      <Switch
+        size="small"
+        checked={active}
+        onChange={handleToggle}
+        color="success"
+      />
     </Box>
   );
 };

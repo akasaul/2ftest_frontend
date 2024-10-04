@@ -8,7 +8,7 @@ import { OrderProps } from "../types/order.type";
 
 export const useGetOrders = (orderProps: OrderProps) =>
   useQuery({
-    queryKey: ["getOrders"],
+    queryKey: ["getOrders", orderProps.globalFilter, orderProps.pageSize, orderProps.pageIndex],
     queryFn: () => getOrders(orderProps),
   });
 

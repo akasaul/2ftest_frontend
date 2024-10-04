@@ -9,6 +9,7 @@ export const paths = {
     create: "/orders",
     update: "/orders",
     get: "/orders",
+    restaurant: "/orders/restaurant",
     my: "/orders/my",
     restaurantOrders: "/orders/restaurant",
     details: "/orders",
@@ -21,6 +22,7 @@ export const paths = {
   },
   role: {
     get: "/roles",
+    update: "/roles",
     create: "/roles",
     assign: "/roles/assign",
   },
@@ -41,5 +43,6 @@ export const paths = {
   dashboard: {
     home: "/dashboard",
     roles: "/dashboard/roles",
+    orders: "/dashboard/orders",
   },
 };

@@ -22,8 +22,8 @@ interface UpdateRolesBody {
 
 export const updateRole = async (updateRolesBody: UpdateRolesBody) => {
   const response = await api.put(
-    `${paths.order.update}/${updateRolesBody.roleId}`,
-    updateRolesBody.isActive,
+    `${paths.role.update}/${updateRolesBody.roleId}/change-activity`,
+    { isActive: updateRolesBody.isActive },
   );
   return response;
 };

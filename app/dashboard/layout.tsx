@@ -13,6 +13,7 @@ import {
   IconButton,
   Box,
   ListItemButton,
+  Stack,
 } from "@mui/material";
 import { Menu } from "@mui/icons-material";
 import { AuthGuard } from "@/guards/auth.guard";
@@ -37,17 +38,14 @@ export default function AdminLayout({
       <Box sx={{ display: "flex" }}>
         <AppBar
           position="fixed"
-          sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          sx={{
+            zIndex: (theme) => theme.zIndex.drawer + 1,
+            left: 240,
+            bgcolor: "#fff",
+          }}
+          elevation={0}
         >
           <Toolbar>
-            <IconButton
-              color="inherit"
-              edge="start"
-              onClick={toggleDrawer}
-              sx={{ marginRight: 2 }}
-            >
-              <Menu />
-            </IconButton>
             <Typography variant="h6" noWrap>
               Restaurant
             </Typography>
@@ -58,7 +56,7 @@ export default function AdminLayout({
           variant="persistent"
           open={open}
           sx={{
-            width: 250,
+            width: 240,
             flexShrink: 0,
             "& .MuiDrawer-paper": {
               width: 240,
@@ -66,7 +64,23 @@ export default function AdminLayout({
             },
           }}
         >
-          <Toolbar />
+          <Toolbar>
+            <Stack
+              direction={"row"}
+              alignItems="center"
+              justifyContent={"space-between"}
+            >
+              <Typography>Pizza</Typography>
+              <IconButton
+                color="inherit"
+                edge="start"
+                onClick={toggleDrawer}
+                sx={{ marginRight: 2 }}
+              >
+                <Menu />
+              </IconButton>
+            </Stack>
+          </Toolbar>
 
           <Box sx={{ overflow: "auto", paddingInline: "10px" }}>
             <List>
@@ -98,7 +112,8 @@ export default function AdminLayout({
           component="main"
           sx={{
             flexGrow: 1,
-            p: 3,
+            backgroundColor: "#f8f8f8",
+            p: "20px",
             transition: (theme) =>
               theme.transitions.create("margin", {
                 easing: theme.transitions.easing.sharp,
@@ -107,7 +122,15 @@ export default function AdminLayout({
           }}
         >
           <Toolbar />
-          {children}
+          <Box
+            component="section"
+            sx={{
+              padding: "47px",
+              backgroundColor: "#fff",
+            }}
+          >
+            {children}
+          </Box>
         </Box>
       </Box>
     </AuthGuard>

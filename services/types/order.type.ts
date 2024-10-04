@@ -1,3 +1,5 @@
+import { MRT_ColumnFiltersState } from "material-react-table";
+
 export interface MyOrder {
   id: number;
   pizzaCover: string;
@@ -15,10 +17,12 @@ interface MyOrderTopping {
 }
 
 export interface OrderProps {
-  page?: number;
-  limit?: number;
+  pageIndex: number;
+  pageSize: number;
+  columnFilters: MRT_ColumnFiltersState;
+  globalFilter: string;
+
   status?: string;
-  search?: string;
   toppings?: number[];
 }
 
@@ -29,10 +33,11 @@ export interface GetOrdersResponse {
   pagination: {
     page: number;
     limit: number;
+    rowCount: number;
   };
 }
 
-interface RestaurantOrder {
+export interface RestaurantOrder {
   id: number;
   pizzaCover: string;
   pizzaName: string;

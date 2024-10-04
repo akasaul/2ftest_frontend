@@ -8,16 +8,14 @@ import {
   type MRT_ColumnFiltersState,
   type MRT_PaginationState,
 } from "material-react-table";
-import { Button, IconButton, Stack, Tooltip, Typography } from "@mui/material";
+import { IconButton, Select, Stack, Tooltip, Typography } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import { useGetRoles } from "@/services/queries/role.query";
-import { Role } from "@/services/types/role.type";
-import ActivitySwitcher from "./_components/ActivitySwitcher";
 import { mkConfig, generateCsv, download } from "export-to-csv";
-import RowHeader from "./_components/RowHeader";
-import { useUpdateRole } from "@/services/mutations/role.mutations";
+import { useGetOrders } from "@/services/queries/order.query";
+import { RestaurantOrder } from "@/services/types/order.type";
+import RowHeader from "../roles/_components/RowHeader";
 
-const RolesTable = () => {
+const OrdersTable = () => {
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
     [],
   );
@@ -27,64 +25,83 @@ const RolesTable = () => {
     pageSize: 11,
   });
 
-  const { data, isError, isRefetching, isLoading, refetch } = useGetRoles({
+  const { data, isError, isRefetching, isLoading, refetch } = useGetOrders({
     pageIndex: pagination.pageIndex,
     pageSize: pagination.pageSize,
     globalFilter,
     columnFilters,
   });
 
-  const { mutateAsync: updateRole } = useUpdateRole();
-
-  const columns = useMemo<MRT_ColumnDef<Role>[]>(
+  const columns = useMemo<MRT_ColumnDef<RestaurantOrder>[]>(
     () => [
       {
-        accessorKey: "name",
-        header: "Role Name",
+        accessorFn: (row) => ({ name: row.pizzaName, cover: row.pizzaCover }),
+        header: "Name",
+
         Header: () => <RowHeader header="Name" />,
+        Cell: ({ cell }) => (
+          <Stack direction={"row"} alignItems={"center"} spacing={2}>
+            <img src={cell.getValue()?.cover} alt="delete" />
+            <Typography>{cell.getValue()?.name}</Typography>
+          </Stack>
+        ),
+      },
+
+      {
+        accessorFn: (row) => ({
+          defaultToppings: row.defaultToppings,
+          additionalToppings: row.additionalToppings,
+        }),
+        header: "Toppings",
+        Header: () => <RowHeader header="Toppings" />,
+        Cell: ({ cell }) => (
+          <Tooltip arrow title="Details">
+            <IconButton onClick={() => {}} color="primary">
+              <img src={"/icons/viewIcon.svg"} alt="view" />
+              <Typography>Toppings</Typography>
+            </IconButton>
+          </Tooltip>
+        ),
+      },
+      {
+        accessorKey: "qty",
+        header: "Quantity",
+        Header: () => <RowHeader header="Quantity" />,
         Cell: ({ cell }) => (
           <Typography>{cell.getValue() as string}</Typography>
         ),
       },
+
+      {
+        accessorKey: "customerNumber",
+        header: "Customer No.",
+        Header: () => <RowHeader header="Customer No." />,
+        Cell: ({ cell }) => (
+          <Typography>{cell.getValue() as string}</Typography>
+        ),
+      },
+
       {
         accessorFn: (row) => new Date(row.createdAt),
         header: "Created At",
         Header: () => <RowHeader header="Created At" />,
         Cell: ({ cell }) => (
-          <Typography>
-            {" "}
-            {new Date(cell.getValue<Date>()).toLocaleString().split(",")[0]}
-          </Typography>
+          <Stack direction={"row"} spacing={1}>
+            <Typography>
+              {new Date(cell.getValue<Date>()).toLocaleString().split(",")[1]}
+            </Typography>
+            <Typography color="textDisabled">
+              {new Date(cell.getValue<Date>()).toLocaleString().split(",")[0]}
+            </Typography>
+          </Stack>
         ),
       },
       {
-        accessorFn: (row) => ({ isActive: row.isActive, id: row.id }),
-        header: "Actions",
-        Header: () => <RowHeader header="Actions" />,
+        accessorKey: "status",
+        header: "Status",
+        Header: () => <RowHeader header="Status" />,
         Cell: ({ cell }) => (
-          <Stack direction={"row"} spacing={1} alignItems="center">
-            <ActivitySwitcher
-              isActive={cell.getValue()?.isActive as boolean}
-              onActivityChange={async (active) => {
-                await updateRole({
-                  roleId: cell.getValue()?.id as number,
-                  isActive: active,
-                });
-                refetch();
-              }}
-            />
-            <Tooltip arrow title="Details">
-              <IconButton onClick={() => {}}>
-                <img src={"/icons/viewIcon.svg"} alt="view" />
-              </IconButton>
-            </Tooltip>
-
-            <Tooltip arrow title="Details">
-              <IconButton onClick={() => {}}>
-                <img src={"/icons/deleteIcon.svg"} alt="delete" />
-              </IconButton>
-            </Tooltip>
-          </Stack>
+          <Select name="Title" title={cell.getValue() as string} />
         ),
       },
     ],
@@ -124,7 +141,6 @@ const RolesTable = () => {
     onPaginationChange: setPagination,
     renderTopToolbarCustomActions: () => (
       <Stack direction="row" spacing={3}>
-        <Button variant="contained">Add Role</Button>
         <Tooltip arrow title="Download Data">
           <IconButton
             onClick={() => handleExportRows(table.getRowModel().rows)}
@@ -143,18 +159,18 @@ const RolesTable = () => {
     rowCount: data?.data?.pagination?.rowCount ?? 1,
     state: {
       columnFilters,
+      density: "compact",
       globalFilter,
       isLoading,
       pagination,
       showAlertBanner: isError,
       showProgressBars: isRefetching,
-      density: "compact",
     },
   });
 
   return <MaterialReactTable table={table} />;
 };
 
-const RolesPage = () => <RolesTable />;
+const OrdersPage = () => <OrdersTable />;
 
-export default RolesPage;
+export default OrdersPage;

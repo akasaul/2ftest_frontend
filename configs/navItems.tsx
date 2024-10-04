@@ -3,6 +3,11 @@ import { paths } from "./paths";
 
 const navItems = [
   {
+    title: "Orders",
+    path: paths.dashboard.orders,
+    icon: <AccountCircle />,
+  },
+  {
     title: "Home",
     path: paths.dashboard.home,
     icon: <Home />,

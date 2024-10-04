@@ -6,7 +6,7 @@ import {
 } from "./interceptors";
 
 const axiosRequestConfig: AxiosRequestConfig = {
-  baseURL: "http://localhost:7009/api",
+  baseURL: "http://localhost:8000/api",
   responseType: "json",
   headers: {
     "Content-Type": "application/json",
