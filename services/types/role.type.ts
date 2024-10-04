@@ -1,3 +1,5 @@
+import { MRT_ColumnFiltersState, MRT_SortingState } from "material-react-table";
+
 interface Restaurant {
   id: number;
   name: string;
@@ -7,7 +9,7 @@ interface Restaurant {
 
 export type GetTopRestaurantsResponse = Restaurant[];
 
-interface Role {
+export interface Role {
   id: number;
   name: string;
   isActive: boolean;
@@ -15,8 +17,10 @@ interface Role {
 }
 
 export interface GetRoleProps {
-  limit: number;
-  page: number;
+  pageIndex: number;
+  pageSize: number;
+  columnFilters: MRT_ColumnFiltersState;
+  globalFilter: string;
 }
 
 export type GetRolesResponse = {
@@ -24,5 +28,6 @@ export type GetRolesResponse = {
   pagination: {
     page: number;
     limit: number;
+    rowCount: number;
   };
 };

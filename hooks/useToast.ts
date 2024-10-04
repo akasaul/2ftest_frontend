@@ -7,6 +7,7 @@ interface Props {
   isError: boolean;
   isSuccess: boolean;
   errors: string[] | null;
+  successMessage?: string;
 }
 
 const useToast = ({

@@ -4,6 +4,6 @@ import { GetRoleProps } from "../types/role.type";
 
 export const useGetRoles = (props: GetRoleProps) =>
   useQuery({
-    queryKey: ["getRoles"],
+    queryKey: ["getRoles", props.pageIndex, props.pageSize, props.globalFilter],
     queryFn: () => getRoles(props),
   });

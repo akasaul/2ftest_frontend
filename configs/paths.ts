@@ -20,7 +20,7 @@ export const paths = {
     home: "/menus",
   },
   role: {
-    get: "/",
+    get: "/roles",
     create: "/roles",
     assign: "/roles/assign",
   },
@@ -39,10 +39,7 @@ export const paths = {
     get: "/pizzas",
   },
   dashboard: {
-    overview: "/dashboard/overview",
-    customers: "/dashboard/customers",
-    integrations: "/dashboard/integrations",
-    settings: "/dashboard/settings",
-    account: "/dashboard/account",
+    home: "/dashboard",
+    roles: "/dashboard/roles",
   },
 };

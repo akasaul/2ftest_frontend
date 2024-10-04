@@ -22,9 +22,9 @@ import { useSignUpRestaurant } from "@/services/mutations/auth.mutations";
 import { useAuth } from "@/providers/AuthProvider";
 
 import { signUpRestaurantSchema } from "@/schmas/auth";
-import { paths } from "@/paths";
 import { useRouter } from "next/navigation";
 import useToast from "@/hooks/useToast";
+import { paths } from "@/configs/paths";
 
 type Values = zod.infer<typeof signUpRestaurantSchema>;
 
@@ -42,7 +42,7 @@ const SignUpRestaurant = () => {
     resolver: zodResolver(signUpRestaurantSchema),
   });
 
-  const router = useRouter()
+  const router = useRouter();
 
   const VisuallyHiddenInput = styled("input")({
     clip: "rect(0 0 0 0)",
@@ -56,16 +56,22 @@ const SignUpRestaurant = () => {
     width: 1,
   });
 
-  const { mutateAsync: signUpRestaurant, isError, error, isSuccess, isPending } = useSignUpRestaurant();
+  const {
+    mutateAsync: signUpRestaurant,
+    isError,
+    error,
+    isSuccess,
+    isPending,
+  } = useSignUpRestaurant();
 
   const { login } = useAuth();
-
 
   useToast({
     isLoading: isPending,
     isSuccess,
     isError,
     errors: error && [(error as any).response.data],
+    successMessage: "Succesfully Registered!",
   });
 
   const onSubmit = async (values: Values) => {
@@ -83,10 +89,8 @@ const SignUpRestaurant = () => {
       data: { user },
     } = await signUpRestaurant(formData);
     login(user.user.token, "restaurant");
-    router.push(paths.owner.dashboard)
+    router.push(paths.owner.dashboard);
   };
-
-
 
   return (
     <Stack spacing={3}>

@@ -1,4 +1,5 @@
 "use server";
+
 import { signUpRestaurantSchema } from "@/schmas/auth";
 
 export const SignUpRestaurant = async (data: FormData) => {

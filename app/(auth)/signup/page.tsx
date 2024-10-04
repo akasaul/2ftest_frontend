@@ -22,12 +22,9 @@ import { z as zod } from "zod";
 import { useAuth } from "@/providers/AuthProvider";
 
 import { signUpSchema } from "@/schmas/auth";
-import { paths } from "@/paths";
 import { useSignUp } from "@/services/mutations/auth.mutations";
-import { showToast } from "@/utils/showToast";
-import { useEffect } from "react";
-import { toast } from "react-toastify";
 import useToast from "@/hooks/useToast";
+import { paths } from "@/configs/paths";
 
 type Values = zod.infer<typeof signUpSchema>;
 
@@ -57,14 +54,14 @@ const SignUp = () => {
     isSuccess,
     isError,
     errors: error && [(error as any).response.data],
+    successMessage: "Succesfully Logged In!",
   });
 
   const onSubmit = async (values: Values) => {
     const { data } = await signUp(values);
     login(data.user.token, "customer");
     router.push(paths.user.home);
-  }
-    
+  };
 
   return (
     <Stack spacing={3}>

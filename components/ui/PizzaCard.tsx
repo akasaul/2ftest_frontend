@@ -13,7 +13,7 @@ import {
   Stack,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { paths } from "@/paths";
+import { paths } from "@/configs/paths";
 
 interface PizzaCardProps {
   id: number;

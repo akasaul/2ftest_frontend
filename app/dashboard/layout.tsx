@@ -14,8 +14,11 @@ import {
   Box,
   ListItemButton,
 } from "@mui/material";
-import { Menu, Home, Dashboard, Settings } from "@mui/icons-material";
+import { Menu } from "@mui/icons-material";
 import { AuthGuard } from "@/guards/auth.guard";
+import navItems from "@/configs/navItems";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 export default function AdminLayout({
   children,
@@ -23,6 +26,7 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const [open, setOpen] = useState(true);
+  const pathname = usePathname();
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -31,7 +35,6 @@ export default function AdminLayout({
   return (
     <AuthGuard>
       <Box sx={{ display: "flex" }}>
-
         <AppBar
           position="fixed"
           sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -65,26 +68,27 @@ export default function AdminLayout({
         >
           <Toolbar />
 
-          <Box sx={{ overflow: "auto" }}>
+          <Box sx={{ overflow: "auto", paddingInline: "10px" }}>
             <List>
-              <ListItemButton selected>
-                <ListItemIcon>
-                  <Home />
-                </ListItemIcon>
-                <ListItemText primary="Home" />
-              </ListItemButton>
-              <ListItemButton>
-                <ListItemIcon>
-                  <Dashboard />
-                </ListItemIcon>
-                <ListItemText primary="Dashboard" />
-              </ListItemButton>
-              <ListItemButton>
-                <ListItemIcon>
-                  <Settings />
-                </ListItemIcon>
-                <ListItemText primary="Settings" />
-              </ListItemButton>
+              {navItems.map((item, index) => (
+                <Link key={index} href={item.path}>
+                  <ListItemButton
+                    selected={pathname == item.path}
+                    sx={{
+                      borderRadius: "10px",
+                      marginBottom: "5px",
+                    }}
+                  >
+                    <ListItemIcon>{item.icon}</ListItemIcon>
+                    <ListItemText
+                      primary={item.title}
+                      sx={{
+                        fontWeight: 700,
+                      }}
+                    />
+                  </ListItemButton>
+                </Link>
+              ))}
             </List>
             <Divider />
           </Box>
@@ -100,7 +104,6 @@ export default function AdminLayout({
                 easing: theme.transitions.easing.sharp,
                 duration: theme.transitions.duration.leavingScreen,
               }),
-            marginLeft: open ? `${250}px` : 0,
           }}
         >
           <Toolbar />

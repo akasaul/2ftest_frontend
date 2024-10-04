@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 
-import { paths } from "@/paths";
+import { paths } from "@/configs/paths";
 import { useAuth } from "@/providers/AuthProvider";
 
 export interface AuthGuardProps {
@@ -17,7 +17,7 @@ export function AuthGuard({
   const { isLoggedIn, isLoading } = useAuth();
   const [isChecking, setIsChecking] = React.useState<boolean>(true);
 
-  const checkPermissions = async (): Promise<void> => {
+  const checkPermissions = async () => {
     if (isLoading) {
       return;
     }
@@ -31,7 +31,7 @@ export function AuthGuard({
   };
 
   React.useEffect(() => {
-    checkPermissions().catch(() => {});
+    checkPermissions();
   }, [isLoggedIn, isLoading]);
 
   if (isChecking) {

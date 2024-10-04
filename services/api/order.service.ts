@@ -1,4 +1,4 @@
-import { paths } from "@/paths";
+import { paths } from "@/configs/paths";
 import { api } from "@/lib/api";
 import { z } from "zod";
 import { createOrderSchema } from "@/schmas/order.schema";

@@ -1,4 +1,3 @@
-import { paths } from "@/paths";
 import { api } from "@/lib/api";
 import { z } from "zod";
 import {
@@ -7,6 +6,7 @@ import {
   assignPermisionSchema,
 } from "@/schmas/role.schema";
 import { GetRoleProps, GetRolesResponse } from "../types/role.type";
+import { paths } from "@/configs/paths";
 
 export const createRole = async (
   roleBody: z.infer<typeof createRoleSchema>,
@@ -42,11 +42,16 @@ export const assignPermissions = async (
   return response;
 };
 
-export const getRoles = async ({ page, limit }: GetRoleProps) => {
+export const getRoles = async ({
+  pageSize,
+  pageIndex,
+  globalFilter,
+}: GetRoleProps) => {
   const response = await api.get<GetRolesResponse>(paths.role.get, {
     params: {
-      limit,
-      page,
+      limit: pageSize,
+      page: pageIndex + 1,
+      search: globalFilter,
     },
   });
   return response;

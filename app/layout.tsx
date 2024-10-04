@@ -12,6 +12,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
+import { LocalizationProvider } from "@/providers/LocalizationProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 const roboto = Roboto({
@@ -34,11 +35,13 @@ export default function RootLayout({
       <body className={`${inter.className} ${roboto.className}`}>
         <AppRouterCacheProvider>
           <AuthProvider>
-            <ThemeProvider theme={theme}>
-              <ToastProvider>
-                <TanstackProvider>{children}</TanstackProvider>
-              </ToastProvider>
-            </ThemeProvider>
+            <LocalizationProvider>
+              <ThemeProvider theme={theme}>
+                <ToastProvider>
+                  <TanstackProvider>{children}</TanstackProvider>
+                </ToastProvider>
+              </ThemeProvider>
+            </LocalizationProvider>
           </AuthProvider>
         </AppRouterCacheProvider>
       </body>

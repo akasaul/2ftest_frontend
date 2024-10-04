@@ -18,12 +18,12 @@ import { EyeSlash as EyeSlashIcon } from "@phosphor-icons/react/dist/ssr/EyeSlas
 import { Controller, useForm } from "react-hook-form";
 import { z as zod } from "zod";
 
-import { paths } from "@/paths";
 import { signInSchema } from "@/schmas/auth";
 import { Checkbox, FormControlLabel } from "@mui/material";
 import { useSignIn } from "@/services/mutations/auth.mutations";
 import { useAuth } from "@/providers/AuthProvider";
 import useToast from "@/hooks/useToast";
+import { paths } from "@/configs/paths";
 
 type Values = zod.infer<typeof signInSchema>;
 
@@ -56,6 +56,7 @@ const Login = () => {
     isSuccess,
     isError,
     errors: error && [(error as any).response.data],
+    successMessage: "Succesfully Logged In!",
   });
 
   const onSubmit = async (values: Values): Promise<void> => {

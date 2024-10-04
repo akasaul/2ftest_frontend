@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { paths } from "@/paths";
+import { paths } from "@/configs/paths";
 
 interface AuthState {
   isLoggedIn: boolean;

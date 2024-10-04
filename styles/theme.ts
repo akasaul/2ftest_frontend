@@ -70,13 +70,10 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           "&.Mui-selected": {
-            backgroundColor: "red",
-            color: "white",
-            "&:hover": {
-              backgroundColor: "darkred",
-            },
+            backgroundColor: "#FF810066",
+            color: "#FF8100",
             "& .MuiListItemIcon-root": {
-              color: "white", 
+              color: "#FF8100",
             },
           },
         },
