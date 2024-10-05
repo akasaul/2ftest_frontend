@@ -26,6 +26,8 @@ import { useGetOrders } from "@/services/queries/order.query";
 import { RestaurantOrder } from "@/services/types/order.type";
 import RowHeader from "../roles/_components/RowHeader";
 import { useAuth } from "@/providers/AuthProvider";
+import StatusSelector from "./_components/Selector";
+import { orderStatuses } from "@/utils/constants";
 
 const OrdersTable = () => {
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
@@ -48,6 +50,7 @@ const OrdersTable = () => {
   const [status, setStatus] = useState<string>("");
 
   const handleStatusChange = (event: SelectChangeEvent) => {
+    console.log(event.target.value, "evet target value");
     setStatus(event.target.value as string);
   };
 
@@ -58,7 +61,7 @@ const OrdersTable = () => {
         header: "Name",
 
         Header: () => <RowHeader header="Name" />,
-        Cell: ({ cell }: {cell: any}) => (
+        Cell: ({ cell }: { cell: any }) => (
           <Stack direction={"row"} alignItems={"center"} spacing={2}>
             <img src={cell.getValue()?.cover} alt="delete" />
             <Typography>{cell.getValue()?.name}</Typography>
@@ -116,36 +119,28 @@ const OrdersTable = () => {
         ),
       },
       {
-        accessorKey: "status",
+        accessorFn: (row) => ({ status: row.status, id: row.id }),
         header: "Status",
         Header: () => <RowHeader header="Status" />,
-        Cell: ({ cell }) => (
+        Cell: ({ cell }: { cell: any }) => (
           <>
-            {ability?.can("update", "Order") ? (
+            {ability?.can("update", "Order") &&
+            cell.getValue()?.status !== orderStatuses.DELIVERED ? (
               <Box maxWidth={100}>
-                <FormControl fullWidth>
-                  <InputLabel id="status-select-label">Status</InputLabel>
-                  <Select
-                    labelId="status-select-label"
-                    id="status-select"
-                    value={status}
-                    label="Status"
-                    onChange={handleStatusChange}
-                  >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
-                </FormControl>
+                <StatusSelector
+                  onStatusChange={() => refetch()}
+                  defaultStatus={cell.getValue()?.status as string}
+                  id={cell.getValue()?.id as number}
+                />
               </Box>
             ) : (
-              <Typography>{cell.getValue() as string}</Typography>
+              <Typography sx={{fontWeight: 600}} color='secondary'>{cell.getValue()?.status as string}</Typography>
             )}
           </>
         ),
       },
     ],
-    [],
+    [ability],
   );
 
   const csvConfig = mkConfig({

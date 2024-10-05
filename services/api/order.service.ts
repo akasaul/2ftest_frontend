@@ -23,7 +23,7 @@ interface UpdateOrdersBody {
 export const updateOrders = async (updateOrderBody: UpdateOrdersBody) => {
   const response = await api.put(
     `${paths.order.update}/${updateOrderBody.orderId}`,
-    updateOrderBody.status,
+    { status: updateOrderBody.status },
   );
   return response;
 };
