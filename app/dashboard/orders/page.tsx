@@ -58,7 +58,7 @@ const OrdersTable = () => {
         header: "Name",
 
         Header: () => <RowHeader header="Name" />,
-        Cell: ({ cell }) => (
+        Cell: ({ cell }: {cell: any}) => (
           <Stack direction={"row"} alignItems={"center"} spacing={2}>
             <img src={cell.getValue()?.cover} alt="delete" />
             <Typography>{cell.getValue()?.name}</Typography>

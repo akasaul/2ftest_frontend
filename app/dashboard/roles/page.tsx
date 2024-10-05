@@ -64,7 +64,7 @@ const RolesTable = () => {
         accessorFn: (row) => ({ isActive: row.isActive, id: row.id }),
         header: "Actions",
         Header: () => <RowHeader header="Actions" />,
-        Cell: ({ cell }) => (
+        Cell: ({ cell }: {cell: any}) => (
           <Stack direction={"row"} spacing={1} alignItems="center">
             {ability && (
               <Can I={"manageRole"} a={"Role"} ability={ability}>
