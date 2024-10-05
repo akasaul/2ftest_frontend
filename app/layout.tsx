@@ -34,15 +34,15 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} ${roboto.className}`}>
         <AppRouterCacheProvider>
-          <AuthProvider>
-            <LocalizationProvider>
-              <ThemeProvider theme={theme}>
-                <ToastProvider>
-                  <TanstackProvider>{children}</TanstackProvider>
-                </ToastProvider>
-              </ThemeProvider>
-            </LocalizationProvider>
-          </AuthProvider>
+          <TanstackProvider>
+            <AuthProvider>
+              <LocalizationProvider>
+                <ThemeProvider theme={theme}>
+                  <ToastProvider>{children}</ToastProvider>
+                </ThemeProvider>
+              </LocalizationProvider>
+            </AuthProvider>
+          </TanstackProvider>
         </AppRouterCacheProvider>
       </body>
     </html>

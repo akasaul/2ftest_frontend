@@ -15,20 +15,10 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  GetPizzaDetailsResponse,
-  PizzaDetailsTopping,
-} from "@/services/types/pizza.type";
+import { GetPizzaDetailsResponse } from "@/services/types/pizza.type";
 import { useCreateOrders } from "@/services/mutations/order.mutations";
 import { showToast } from "@/utils/showToast";
-
-const orderSchema = z.object({
-  toppings: z.array(z.number()).min(1, "Please select at least one topping"),
-  quantity: z
-    .number()
-    .min(1, "Quantity must be at least 1")
-    .max(10, "You cannot order more than 10 pizzas"),
-});
+import { orderSchema } from "@/schmas/order.schema";
 
 type OrderFormData = z.infer<typeof orderSchema>;
 
@@ -67,7 +57,7 @@ const OrderPizza = ({ pizzaDetails }: OrderPizzaProps) => {
       ),
       pizzaId: pizzaDetails.id,
     });
-    showToast('success', 'Succesfully ordered pizza!')
+    showToast("success", "Succesfully ordered pizza!");
   };
 
   const quantity = watch("quantity");

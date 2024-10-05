@@ -22,12 +22,14 @@ export const paths = {
   },
   role: {
     get: "/roles",
+    myPermissions: "/roles/my-permissions",
     update: "/roles",
     create: "/roles",
     assign: "/roles/assign",
   },
   toppings: {
     create: "/toppings",
+    getRestaurant: "/toppings/restaurant",
   },
   restuarants: {
     top: "/restaurants/top",
@@ -43,6 +45,8 @@ export const paths = {
   dashboard: {
     home: "/dashboard",
     roles: "/dashboard/roles",
-    orders: "/dashboard/orders",
+    users: "/dashboard/users",
+    orders: "/dashboard",
+    addMenu: "/dashboard/add-menu",
   },
 };

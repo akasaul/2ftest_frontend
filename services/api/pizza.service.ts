@@ -12,10 +12,12 @@ export const getPopularPizzas = async () => {
   return response;
 };
 
-export const createPizza = async (
-  pizzaBody: z.infer<typeof createPizzaSchema>,
-) => {
-  const response = await api.post(paths.pizza.create, pizzaBody);
+export const createPizza = async (pizzaBody: FormData) => {
+  const response = await api.post(paths.pizza.create, pizzaBody, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
   return response;
 };
 

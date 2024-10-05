@@ -12,15 +12,12 @@ import { Button, IconButton, Stack, Tooltip, Typography } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { useGetRoles } from "@/services/queries/role.query";
 import { Role } from "@/services/types/role.type";
-import ActivitySwitcher from "./_components/ActivitySwitcher";
 import { mkConfig, generateCsv, download } from "export-to-csv";
-import RowHeader from "./_components/RowHeader";
 import { useUpdateRole } from "@/services/mutations/role.mutations";
-import { useAuth } from "@/providers/AuthProvider";
-import { Can } from "@casl/react";
+import RowHeader from "../roles/_components/RowHeader";
+import ActivitySwitcher from "../roles/_components/ActivitySwitcher";
 
-const RolesTable = () => {
-  const { ability } = useAuth();
+const UsersTable = () => {
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
     [],
   );
@@ -82,20 +79,16 @@ const RolesTable = () => {
               </IconButton>
             </Tooltip>
 
-            {ability && (
-              <Can I={"manageRole"} a={"Role"} ability={ability}>
-                <Tooltip arrow title="Details">
-                  <IconButton onClick={() => {}}>
-                    <img src={"/icons/deleteIcon.svg"} alt="delete" />
-                  </IconButton>
-                </Tooltip>
-              </Can>
-            )}
+            <Tooltip arrow title="Details">
+              <IconButton onClick={() => {}}>
+                <img src={"/icons/deleteIcon.svg"} alt="delete" />
+              </IconButton>
+            </Tooltip>
           </Stack>
         ),
       },
     ],
-    [refetch, updateRole],
+    [],
   );
 
   const csvConfig = mkConfig({
@@ -162,6 +155,6 @@ const RolesTable = () => {
   return <MaterialReactTable table={table} />;
 };
 
-const RolesPage = () => <RolesTable />;
+const UsersPage = () => <UsersTable />;
 
-export default RolesPage;
+export default UsersPage;

@@ -1,4 +1,4 @@
-import { Home, AccountCircle } from "@mui/icons-material";
+import { AccountCircle } from "@mui/icons-material";
 import { paths } from "./paths";
 
 const navItems = [
@@ -8,13 +8,18 @@ const navItems = [
     icon: <AccountCircle />,
   },
   {
-    title: "Home",
-    path: paths.dashboard.home,
-    icon: <Home />,
+    title: "Add menu",
+    path: paths.dashboard.addMenu,
+    icon: <AccountCircle />,
   },
   {
     title: "Roles",
     path: paths.dashboard.roles,
+    icon: <AccountCircle />,
+  },
+  {
+    title: "Users",
+    path: paths.dashboard.users,
     icon: <AccountCircle />,
   },
 ];

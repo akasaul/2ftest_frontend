@@ -5,7 +5,7 @@ import {
   assignRoleSchema,
   assignPermisionSchema,
 } from "@/schmas/role.schema";
-import { GetRoleProps, GetRolesResponse } from "../types/role.type";
+import { GetMyPermissions, GetRoleProps, GetRolesResponse } from "../types/role.type";
 import { paths } from "@/configs/paths";
 
 export const createRole = async (
@@ -54,5 +54,11 @@ export const getRoles = async ({
       search: globalFilter,
     },
   });
+  return response;
+};
+
+
+export const getMyPermissions = async () => {
+  const response = await api.get<GetMyPermissions>(paths.role.myPermissions);
   return response;
 };

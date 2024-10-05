@@ -23,6 +23,15 @@ export interface GetRoleProps {
   globalFilter: string;
 }
 
+export interface Permission {
+  id: number;
+  name: string;
+  action: string;
+  subject: string;
+}
+
+export type GetMyPermissions = Permission[];
+
 export type GetRolesResponse = {
   data: Role[];
   pagination: {
