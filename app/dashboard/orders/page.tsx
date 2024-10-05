@@ -14,6 +14,7 @@ import {
   IconButton,
   InputLabel,
   MenuItem,
+  Modal,
   Select,
   SelectChangeEvent,
   Stack,
@@ -28,6 +29,7 @@ import RowHeader from "../roles/_components/RowHeader";
 import { useAuth } from "@/providers/AuthProvider";
 import StatusSelector from "./_components/Selector";
 import { orderStatuses } from "@/utils/constants";
+import ToppingDetails from "./_components/ToppingDetails";
 
 const OrdersTable = () => {
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
@@ -48,11 +50,9 @@ const OrdersTable = () => {
 
   const { ability } = useAuth();
   const [status, setStatus] = useState<string>("");
+  const [open, setIsOpen] = useState(false);
 
-  const handleStatusChange = (event: SelectChangeEvent) => {
-    console.log(event.target.value, "evet target value");
-    setStatus(event.target.value as string);
-  };
+  console.log({open});
 
   const columns = useMemo<MRT_ColumnDef<RestaurantOrder>[]>(
     () => [
@@ -63,7 +63,11 @@ const OrdersTable = () => {
         Header: () => <RowHeader header="Name" />,
         Cell: ({ cell }: { cell: any }) => (
           <Stack direction={"row"} alignItems={"center"} spacing={2}>
-            <img src={cell.getValue()?.cover} alt="delete" />
+            <img style={{
+              height: 50,
+              width: 50,
+              borderRadius: '50%',
+            }} src={cell.getValue()?.cover} alt="delete" />
             <Typography>{cell.getValue()?.name}</Typography>
           </Stack>
         ),
@@ -76,9 +80,20 @@ const OrdersTable = () => {
         }),
         header: "Toppings",
         Header: () => <RowHeader header="Toppings" />,
-        Cell: ({ cell }) => (
+        Cell: ({ cell }: {cell: any}) => (
           <Tooltip arrow title="Details">
-            <IconButton onClick={() => {}} color="primary">
+            <IconButton
+              onClick={() => {
+                setIsOpen(true);
+              }}
+              color="primary"
+            >
+              <ToppingDetails
+                isOpen={open}
+                handleClose={() => setIsOpen(false)}
+                defaultToppings={cell.getValue()?.defaultToppings}
+                additionalToppings={cell.getValue()?.additionalToppings}
+              />
               <img src={"/icons/viewIcon.svg"} alt="view" />
               <Typography>Toppings</Typography>
             </IconButton>
@@ -134,13 +149,15 @@ const OrdersTable = () => {
                 />
               </Box>
             ) : (
-              <Typography sx={{fontWeight: 600}} color='secondary'>{cell.getValue()?.status as string}</Typography>
+              <Typography sx={{ fontWeight: 600 }} color="secondary">
+                {cell.getValue()?.status as string}
+              </Typography>
             )}
           </>
         ),
       },
     ],
-    [ability],
+    [ability, refetch],
   );
 
   const csvConfig = mkConfig({

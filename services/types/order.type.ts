@@ -10,7 +10,7 @@ export interface MyOrder {
   status: string;
 }
 
-interface MyOrderTopping {
+export interface MyOrderTopping {
   id: number;
   name: string;
   price: number;

@@ -23,6 +23,7 @@ import {
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
+import AddToppingForm from "./addToppingForm";
 
 const AddMenuForm = () => {
   const {
@@ -36,7 +37,7 @@ const AddMenuForm = () => {
   });
 
   type Values = z.infer<typeof createPizzaSchema>;
-  const { data } = useGetRestaurantToppings();
+  const { data, refetch } = useGetRestaurantToppings();
 
   const VisuallyHiddenInput = styled("input")({
     clip: "rect(0 0 0 0)",
@@ -67,6 +68,7 @@ const AddMenuForm = () => {
 
   const handleClose = () => {
     setOpen(false);
+    refetch()
   };
 
   return (
@@ -138,6 +140,7 @@ const AddMenuForm = () => {
                   width: "74px",
                   height: "44px",
                 }}
+                onClick={() => setOpen(true)}
               >
                 <Add /> Add
               </Button>
@@ -260,12 +263,7 @@ const AddMenuForm = () => {
             p: 4,
           }}
         >
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography>
+          <AddToppingForm handleClose={handleClose} />
         </Box>
       </Modal>
     </Stack>
