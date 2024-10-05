@@ -40,14 +40,25 @@ export default function AdminLayout({
           position="fixed"
           sx={{
             zIndex: (theme) => theme.zIndex.drawer + 1,
-            left: 240,
+            left: open ? 240 : 0,
             bgcolor: "#fff",
           }}
           elevation={0}
         >
           <Toolbar>
-            <Typography variant="h6" noWrap>
-              Restaurant
+            {!open && (
+              <IconButton
+                color="inherit"
+                edge="start"
+                onClick={toggleDrawer}
+                sx={{ marginRight: 2 }}
+              >
+                <Menu />
+              </IconButton>
+            )}
+
+            <Typography variant="h6" noWrap textTransform={"capitalize"}>
+              {pathname.split("/")[2]}
             </Typography>
           </Toolbar>
         </AppBar>
@@ -56,7 +67,12 @@ export default function AdminLayout({
           variant="persistent"
           open={open}
           sx={{
-            width: 240,
+            width: open ? 240 : 0,
+            transition: (theme) =>
+              theme.transitions.create("width", {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.leavingScreen,
+              }),
             flexShrink: 0,
             "& .MuiDrawer-paper": {
               width: 240,
@@ -69,14 +85,10 @@ export default function AdminLayout({
               direction={"row"}
               alignItems="center"
               justifyContent={"space-between"}
+              width={"100%"}
             >
               <Typography>Pizza</Typography>
-              <IconButton
-                color="inherit"
-                edge="start"
-                onClick={toggleDrawer}
-                sx={{ marginRight: 2 }}
-              >
+              <IconButton color="inherit" edge="start" onClick={toggleDrawer}>
                 <Menu />
               </IconButton>
             </Stack>

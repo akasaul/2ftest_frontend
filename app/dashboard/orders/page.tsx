@@ -8,12 +8,24 @@ import {
   type MRT_ColumnFiltersState,
   type MRT_PaginationState,
 } from "material-react-table";
-import { IconButton, Select, Stack, Tooltip, Typography } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  IconButton,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Stack,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { mkConfig, generateCsv, download } from "export-to-csv";
 import { useGetOrders } from "@/services/queries/order.query";
 import { RestaurantOrder } from "@/services/types/order.type";
 import RowHeader from "../roles/_components/RowHeader";
+import { useAuth } from "@/providers/AuthProvider";
 
 const OrdersTable = () => {
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
@@ -31,6 +43,13 @@ const OrdersTable = () => {
     globalFilter,
     columnFilters,
   });
+
+  const { ability } = useAuth();
+  const [status, setStatus] = useState<string>("");
+
+  const handleStatusChange = (event: SelectChangeEvent) => {
+    setStatus(event.target.value as string);
+  };
 
   const columns = useMemo<MRT_ColumnDef<RestaurantOrder>[]>(
     () => [
@@ -101,7 +120,28 @@ const OrdersTable = () => {
         header: "Status",
         Header: () => <RowHeader header="Status" />,
         Cell: ({ cell }) => (
-          <Select name="Title" title={cell.getValue() as string} />
+          <>
+            {ability?.can("update", "Order") ? (
+              <Box maxWidth={100}>
+                <FormControl fullWidth>
+                  <InputLabel id="status-select-label">Status</InputLabel>
+                  <Select
+                    labelId="status-select-label"
+                    id="status-select"
+                    value={status}
+                    label="Status"
+                    onChange={handleStatusChange}
+                  >
+                    <MenuItem value={10}>Ten</MenuItem>
+                    <MenuItem value={20}>Twenty</MenuItem>
+                    <MenuItem value={30}>Thirty</MenuItem>
+                  </Select>
+                </FormControl>
+              </Box>
+            ) : (
+              <Typography>{cell.getValue() as string}</Typography>
+            )}
+          </>
         ),
       },
     ],

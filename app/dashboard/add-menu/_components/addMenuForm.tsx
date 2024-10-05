@@ -17,7 +17,10 @@ import {
   Button,
   styled,
   FormHelperText,
+  Modal,
+  Box,
 } from "@mui/material";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -47,16 +50,23 @@ const AddMenuForm = () => {
     width: 1,
   });
 
-  const { mutateAsync: createPizza } = useCreatePizza()
+  const { mutateAsync: createPizza } = useCreatePizza();
 
-  const onSubmit = async(values: Values) => {
+  const [open, setOpen] = useState(true);
+
+  const onSubmit = async (values: Values) => {
     const formData = new FormData();
     formData.append("name", values.name);
     formData.append("price", values.price.toString());
     formData.append("pizzaCover", values.pizzaCover);
-    formData.append("toppings", values.toppings);
+    formData.append("toppings", JSON.stringify(values.toppings));
 
-    await createPizza(formData)
+    await createPizza(formData);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
@@ -132,11 +142,10 @@ const AddMenuForm = () => {
                 <Add /> Add
               </Button>
             </Grid>
-            
-            {
-              errors.toppings &&
-                <FormHelperText>{errors.toppings.message}</FormHelperText>
-            }
+
+            {errors.toppings && (
+              <FormHelperText>{errors.toppings.message}</FormHelperText>
+            )}
           </Stack>
 
           <Controller
@@ -230,6 +239,35 @@ const AddMenuForm = () => {
           Submit
         </Button>
       </form>
+
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: "background.paper",
+            border: "none",
+            borderRadius: "20px",
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Text in a modal
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+          </Typography>
+        </Box>
+      </Modal>
     </Stack>
   );
 };

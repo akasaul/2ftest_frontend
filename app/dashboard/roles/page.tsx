@@ -66,21 +66,30 @@ const RolesTable = () => {
         Header: () => <RowHeader header="Actions" />,
         Cell: ({ cell }) => (
           <Stack direction={"row"} spacing={1} alignItems="center">
-            <ActivitySwitcher
-              isActive={cell.getValue()?.isActive as boolean}
-              onActivityChange={async (active) => {
-                await updateRole({
-                  roleId: cell.getValue()?.id as number,
-                  isActive: active,
-                });
-                refetch();
-              }}
-            />
-            <Tooltip arrow title="Details">
-              <IconButton onClick={() => {}}>
-                <img src={"/icons/viewIcon.svg"} alt="view" />
-              </IconButton>
-            </Tooltip>
+            {ability && (
+              <Can I={"manageRole"} a={"Role"} ability={ability}>
+                <ActivitySwitcher
+                  isActive={cell.getValue()?.isActive as boolean}
+                  onActivityChange={async (active) => {
+                    await updateRole({
+                      roleId: cell.getValue()?.id as number,
+                      isActive: active,
+                    });
+                    refetch();
+                  }}
+                />
+              </Can>
+            )}
+
+            {ability && (
+              <Can I={"readPermission"} a={"Role"} ability={ability}>
+                <Tooltip arrow title="Details">
+                  <IconButton onClick={() => {}}>
+                    <img src={"/icons/viewIcon.svg"} alt="view" />
+                  </IconButton>
+                </Tooltip>
+              </Can>
+            )}
 
             {ability && (
               <Can I={"manageRole"} a={"Role"} ability={ability}>
@@ -131,7 +140,11 @@ const RolesTable = () => {
     onPaginationChange: setPagination,
     renderTopToolbarCustomActions: () => (
       <Stack direction="row" spacing={3}>
-        <Button variant="contained">Add Role</Button>
+        {ability && (
+          <Can I={"manageRole"} a={"Role"} ability={ability}>
+            <Button variant="contained">Add Role</Button>
+          </Can>
+        )}
         <Tooltip arrow title="Download Data">
           <IconButton
             onClick={() => handleExportRows(table.getRowModel().rows)}
