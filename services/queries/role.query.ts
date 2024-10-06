@@ -1,5 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { getMyPermissions, getRoles } from "../api/role.service";
+import {
+  getAllPermissions,
+  getMyPermissions,
+  getRolePermissions,
+  getRoles,
+} from "../api/role.service";
 import { GetRoleProps } from "../types/role.type";
 
 export const useGetRoles = (props: GetRoleProps) =>
@@ -12,4 +17,16 @@ export const useGetMyPermissions = () =>
   useQuery({
     queryKey: ["getMyPermissions"],
     queryFn: () => getMyPermissions(),
+  });
+
+export const useGetRolePermissions = (id: number) =>
+  useQuery({
+    queryKey: ["getRolePermissions", id],
+    queryFn: () => getRolePermissions(id),
+  });
+
+export const useGetAllPermissions = () =>
+  useQuery({
+    queryKey: ["getAllPermissions"],
+    queryFn: () => getAllPermissions(),
   });

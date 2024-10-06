@@ -8,10 +8,13 @@ interface Props {
   isSuccess: boolean;
   errors: string[] | null;
   successMessage?: string;
+  loadingMessage?: string;
 }
 
 const useToast = ({
   isLoading: isPending,
+  loadingMessage,
+  successMessage,
   isError,
   isSuccess,
   errors,
@@ -19,7 +22,7 @@ const useToast = ({
   useEffect(() => {
     let tId;
     if (isPending) {
-      tId = showToast("loading", "Logging you in");
+      tId = showToast("loading", loadingMessage ?? "Logging you in");
     } else {
       toast.dismiss(tId);
     }
@@ -31,9 +34,9 @@ const useToast = ({
     }
 
     if (isSuccess) {
-      showToast("success", "Succesfully registered", {});
+      showToast("success", successMessage ?? "Succesfully registered", {});
     }
-  }, [isPending, isError, isSuccess, errors]);
+  }, [isPending, isError, isSuccess, errors, loadingMessage, successMessage]);
 };
 
 export default useToast;

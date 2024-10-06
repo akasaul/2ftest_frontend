@@ -5,7 +5,13 @@ import {
   assignRoleSchema,
   assignPermisionSchema,
 } from "@/schmas/role.schema";
-import { GetMyPermissions, GetRoleProps, GetRolesResponse } from "../types/role.type";
+import {
+  GetAllPermissions,
+  GetMyPermissions,
+  GetRolePermissions,
+  GetRoleProps,
+  GetRolesResponse,
+} from "../types/role.type";
 import { paths } from "@/configs/paths";
 
 export const createRole = async (
@@ -38,7 +44,7 @@ export const assignRole = async (
 export const assignPermissions = async (
   permissionsBody: z.infer<typeof assignPermisionSchema>,
 ) => {
-  const response = await api.put(paths.role.assign, permissionsBody);
+  const response = await api.put(paths.role.assignPermissions, permissionsBody);
   return response;
 };
 
@@ -57,8 +63,19 @@ export const getRoles = async ({
   return response;
 };
 
-
 export const getMyPermissions = async () => {
   const response = await api.get<GetMyPermissions>(paths.role.myPermissions);
+  return response;
+};
+
+export const getAllPermissions = async () => {
+  const response = await api.get<GetAllPermissions>(paths.role.allPermissions);
+  return response;
+};
+
+export const getRolePermissions = async (id: number) => {
+  const response = await api.get<GetRolePermissions>(
+    `${paths.role.get}/${id}/permissions`,
+  );
   return response;
 };

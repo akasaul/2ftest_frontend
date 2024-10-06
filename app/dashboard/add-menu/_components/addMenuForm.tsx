@@ -53,7 +53,7 @@ const AddMenuForm = () => {
 
   const { mutateAsync: createPizza } = useCreatePizza();
 
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   const onSubmit = async (values: Values) => {
     const formData = new FormData();
@@ -68,7 +68,7 @@ const AddMenuForm = () => {
 
   const handleClose = () => {
     setOpen(false);
-    refetch()
+    refetch();
   };
 
   return (

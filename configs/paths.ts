@@ -23,9 +23,11 @@ export const paths = {
   role: {
     get: "/roles",
     myPermissions: "/roles/my-permissions",
+    allPermissions: "/roles/all-permissions",
     update: "/roles",
     create: "/roles",
-    assign: "/roles/assign",
+    assign: "/roles/edit",
+    assignPermissions: "/roles/assign-permissions",
   },
   toppings: {
     create: "/toppings",

@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   MaterialReactTable,
   MRT_Row,
@@ -8,7 +8,15 @@ import {
   type MRT_ColumnFiltersState,
   type MRT_PaginationState,
 } from "material-react-table";
-import { Button, IconButton, Stack, Tooltip, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  IconButton,
+  Modal,
+  Stack,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { useGetRoles } from "@/services/queries/role.query";
 import { Role } from "@/services/types/role.type";
@@ -18,13 +26,28 @@ import RowHeader from "./_components/RowHeader";
 import { useUpdateRole } from "@/services/mutations/role.mutations";
 import { useAuth } from "@/providers/AuthProvider";
 import { Can } from "@casl/react";
+import AddRoleForm from "./_components/AddRoleModal";
+import UpdateRoleForm from "./_components/UpdateRoleForm";
 
-const RolesTable = () => {
+interface Props {
+  handleSetRoleId: (id: number) => void;
+  handleUpdateOpen: () => void;
+  handleUpdateClose: () => void;
+  onUpdateClose: () => void;
+}
+
+const RolesTable = ({
+  handleSetRoleId,
+  handleUpdateClose,
+  handleUpdateOpen,
+}: Props) => {
   const { ability } = useAuth();
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
     [],
   );
   const [globalFilter, setGlobalFilter] = useState("");
+  const [open, setOpen] = useState(false);
+
   const [pagination, setPagination] = useState<MRT_PaginationState>({
     pageIndex: 1,
     pageSize: 11,
@@ -64,7 +87,7 @@ const RolesTable = () => {
         accessorFn: (row) => ({ isActive: row.isActive, id: row.id }),
         header: "Actions",
         Header: () => <RowHeader header="Actions" />,
-        Cell: ({ cell }: {cell: any}) => (
+        Cell: ({ cell }: { cell: any }) => (
           <Stack direction={"row"} spacing={1} alignItems="center">
             {ability && (
               <Can I={"manageRole"} a={"Role"} ability={ability}>
@@ -84,9 +107,14 @@ const RolesTable = () => {
             {ability && (
               <Can I={"readPermission"} a={"Role"} ability={ability}>
                 <Tooltip arrow title="Details">
-                  <IconButton onClick={() => {}}>
+                  <Button
+                    onClick={() => {
+                      handleSetRoleId(cell.getValue().id);
+                      handleUpdateOpen();
+                    }}
+                  >
                     <img src={"/icons/viewIcon.svg"} alt="view" />
-                  </IconButton>
+                  </Button>
                 </Tooltip>
               </Can>
             )}
@@ -94,7 +122,7 @@ const RolesTable = () => {
             {ability && (
               <Can I={"manageRole"} a={"Role"} ability={ability}>
                 <Tooltip arrow title="Details">
-                  <IconButton onClick={() => {}}>
+                  <IconButton>
                     <img src={"/icons/deleteIcon.svg"} alt="delete" />
                   </IconButton>
                 </Tooltip>
@@ -104,8 +132,12 @@ const RolesTable = () => {
         ),
       },
     ],
-    [refetch, updateRole],
+    [refetch, updateRole, ability, handleSetRoleId, handleUpdateOpen],
   );
+
+  useEffect(() => {
+    refetch();
+  }, [refetch, handleUpdateClose]);
 
   const csvConfig = mkConfig({
     fieldSeparator: ",",
@@ -119,6 +151,11 @@ const RolesTable = () => {
     const csv = generateCsv(csvConfig)(rowData);
 
     download(csvConfig)(csv);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    refetch();
   };
 
   const table = useMaterialReactTable({
@@ -142,7 +179,32 @@ const RolesTable = () => {
       <Stack direction="row" spacing={3}>
         {ability && (
           <Can I={"manageRole"} a={"Role"} ability={ability}>
-            <Button variant="contained">Add Role</Button>
+            <Button variant="contained" onClick={() => setOpen(true)}>
+              Add Role
+            </Button>
+            <Modal
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box
+                sx={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  width: 400,
+                  bgcolor: "background.paper",
+                  border: "none",
+                  borderRadius: "20px",
+                  boxShadow: 24,
+                  p: 4,
+                }}
+              >
+                <AddRoleForm handleClose={handleClose} />
+              </Box>
+            </Modal>
           </Can>
         )}
         <Tooltip arrow title="Download Data">
@@ -175,6 +237,59 @@ const RolesTable = () => {
   return <MaterialReactTable table={table} />;
 };
 
-const RolesPage = () => <RolesTable />;
+const RolesPage = () => {
+  const [updateOpen, setUpdateOpen] = useState(false);
+  const [roleId, setRoleId] = useState<number>();
+
+  const handleUpdateClose = () => {
+    setUpdateOpen(false);
+  };
+
+  const handleUpdateOpen = () => {
+    setUpdateOpen(true);
+  };
+
+  const handleSetRoleId = (id: number) => {
+    setRoleId(id);
+  };
+
+  const onUpdateClose = () => {};
+
+  return (
+    <>
+      <Modal
+        open={updateOpen}
+        onClose={handleUpdateClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: { xs: 400, sm: 600 },
+            bgcolor: "background.paper",
+            border: "none",
+            borderRadius: "20px",
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+          {roleId && (
+            <UpdateRoleForm id={roleId} handleClose={handleUpdateClose} />
+          )}
+        </Box>
+      </Modal>
+      <RolesTable
+        handleUpdateOpen={handleUpdateOpen}
+        handleUpdateClose={handleUpdateClose}
+        onUpdateClose={onUpdateClose}
+        handleSetRoleId={handleSetRoleId}
+      />
+    </>
+  );
+};
 
 export default RolesPage;

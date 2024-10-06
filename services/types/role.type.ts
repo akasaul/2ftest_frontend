@@ -40,3 +40,23 @@ export type GetRolesResponse = {
     rowCount: number;
   };
 };
+
+export interface Permission {
+  id: number;
+  name: string;
+  action: string;
+  subject: string;
+}
+
+export type GetAllPermissions = Permission[];
+
+export interface RolePermission {
+  id: number;
+  name: string;
+  isSelected: boolean;
+}
+
+export type GetRolePermissions = {
+  permissions: RolePermission[];
+  name: string;
+};
