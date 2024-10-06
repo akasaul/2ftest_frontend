@@ -8,18 +8,21 @@ import {
   type MRT_ColumnFiltersState,
   type MRT_PaginationState,
 } from "material-react-table";
-import { Button, IconButton, Stack, Tooltip, Typography } from "@mui/material";
+import { Box, Button, IconButton, Modal, Stack, Tooltip, Typography } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import { useGetRoles } from "@/services/queries/role.query";
-import { Role } from "@/services/types/role.type";
 import { mkConfig, generateCsv, download } from "export-to-csv";
 import { useUpdateRole } from "@/services/mutations/role.mutations";
 import RowHeader from "../roles/_components/RowHeader";
 import ActivitySwitcher from "../roles/_components/ActivitySwitcher";
 import { useGetRestaurantUsers } from "@/services/queries/restuarants.query";
 import { RestaurantUser } from "@/services/types/restaurant.type";
+import AddUserForm from "./_components/AddUserForm";
+import { useAuth } from "@/providers/AuthProvider";
+import { Can } from "@casl/react";
 
 const UsersTable = () => {
+    const { ability } = useAuth();
+
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
     [],
   );
@@ -38,6 +41,7 @@ const UsersTable = () => {
     });
 
   const { mutateAsync: updateRole } = useUpdateRole();
+  const [open, setOpen] = useState(false);
 
   const columns = useMemo<MRT_ColumnDef<RestaurantUser>[]>(
     () => [
@@ -81,13 +85,8 @@ const UsersTable = () => {
                 refetch();
               }}
             />
-            <Tooltip arrow title="Details">
-              <IconButton onClick={() => {}}>
-                <img src={"/icons/viewIcon.svg"} alt="view" />
-              </IconButton>
-            </Tooltip>
-
-            <Tooltip arrow title="Details">
+           
+            <Tooltip arrow title="Delete">
               <IconButton onClick={() => {}}>
                 <img src={"/icons/deleteIcon.svg"} alt="delete" />
               </IconButton>
@@ -104,6 +103,12 @@ const UsersTable = () => {
     decimalSeparator: ".",
     useKeysAsHeaders: true,
   });
+
+
+  const handleClose = () => {
+    setOpen(false);
+    refetch();
+  };
 
   const handleExportRows = (rows: MRT_Row<any>[]) => {
     const rowData = rows.map((row) => row.original);
@@ -132,6 +137,36 @@ const UsersTable = () => {
     onPaginationChange: setPagination,
     renderTopToolbarCustomActions: () => (
       <Stack direction="row" spacing={3}>
+        {ability && (
+          <Can I={"manageRole"} a={"Role"} ability={ability}>
+            <Button variant="contained" onClick={() => setOpen(true)}>
+              Add User
+            </Button>
+            <Modal
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box
+                sx={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  width: 400,
+                  bgcolor: "background.paper",
+                  border: "none",
+                  borderRadius: "20px",
+                  boxShadow: 24,
+                  p: 4,
+                }}
+              >
+                <AddUserForm handleClose={handleClose} />
+              </Box>
+            </Modal>
+          </Can>
+        )}
         <Tooltip arrow title="Download Data">
           <IconButton
             onClick={() => handleExportRows(table.getRowModel().rows)}

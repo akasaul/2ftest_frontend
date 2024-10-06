@@ -87,7 +87,12 @@ export default function AdminLayout({
               justifyContent={"space-between"}
               width={"100%"}
             >
-              <Typography>Pizza</Typography>
+              <img
+                src={"/icons/pizzaOnly.svg"}
+                alt="pizza"
+                width={40}
+                height={40}
+              />
               <IconButton color="inherit" edge="start" onClick={toggleDrawer}>
                 <Menu />
               </IconButton>

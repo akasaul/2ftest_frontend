@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 
 const Navbar = () => {
   const path = usePathname();
-  const { isLoggedIn, isLoading, logout } = useAuth();
+  const { isLoggedIn, isLoading, view, logout } = useAuth();
 
   return (
     <Box
@@ -48,6 +48,18 @@ const Navbar = () => {
             Orders
           </Typography>
         </Link>
+
+        {view === "restaurant" && (
+          <Link href={"/dashboard"}>
+            <Typography
+              variant="h5"
+              fontWeight={path == "/orders" ? 700 : 500}
+              color={path == "/orders" ? "primary" : "#16120DBF"}
+            >
+              Dashboard
+            </Typography>
+          </Link>
+        )}
       </Stack>
       {!isLoading && isLoggedIn ? (
         <Button

@@ -23,6 +23,11 @@ export interface GetRoleProps {
   globalFilter: string;
 }
 
+export interface GetRestaurantRoleProps {
+  pageIndex: number;
+  pageSize: number;
+}
+
 export interface Permission {
   id: number;
   name: string;

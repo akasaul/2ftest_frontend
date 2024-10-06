@@ -1,7 +1,6 @@
 "use client";
 
 import PizzaLoader from "@/components/ui/Loader";
-import useToast from "@/hooks/useToast";
 import { createRoleSchema } from "@/schmas/role.schema";
 import { useCreateRole } from "@/services/mutations/role.mutations";
 import { useGetAllPermissions } from "@/services/queries/role.query";

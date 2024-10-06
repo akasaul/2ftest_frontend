@@ -10,13 +10,7 @@ import {
 } from "material-react-table";
 import {
   Box,
-  FormControl,
   IconButton,
-  InputLabel,
-  MenuItem,
-  Modal,
-  Select,
-  SelectChangeEvent,
   Stack,
   Tooltip,
   Typography,
@@ -64,8 +58,8 @@ const OrdersTable = () => {
         Cell: ({ cell }: { cell: any }) => (
           <Stack direction={"row"} alignItems={"center"} spacing={2}>
             <img style={{
-              height: 50,
-              width: 50,
+              height: 30,
+              width: 30,
               borderRadius: '50%',
             }} src={cell.getValue()?.cover} alt="delete" />
             <Typography>{cell.getValue()?.name}</Typography>

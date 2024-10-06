@@ -8,6 +8,7 @@ import {
 import {
   GetAllPermissions,
   GetMyPermissions,
+  GetRestaurantRoleProps,
   GetRolePermissions,
   GetRoleProps,
   GetRolesResponse,
@@ -58,6 +59,19 @@ export const getRoles = async ({
       limit: pageSize,
       page: pageIndex + 1,
       search: globalFilter,
+    },
+  });
+  return response;
+};
+
+export const getRestaurantRoles = async ({
+  pageSize,
+  pageIndex,
+}: GetRestaurantRoleProps) => {
+  const response = await api.get<GetRolesResponse>(paths.role.get, {
+    params: {
+      limit: pageSize,
+      page: pageIndex + 1,
     },
   });
   return response;
