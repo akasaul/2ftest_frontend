@@ -104,7 +104,7 @@ const PopularRestaurants = () => {
                 description={
                   "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to..."
                 }
-                numberOfOrders={restaurant.orederCount}
+                numberOfOrders={restaurant.orederCount?.toString()}
               />
             </SwiperSlide>
           ))}
