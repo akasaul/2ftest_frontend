@@ -22,7 +22,6 @@ import { mkConfig, generateCsv, download } from "export-to-csv";
 import {
   useChangeUserActivity,
   useDeleteRestaurantUser,
-  useUpdateRole,
 } from "@/services/mutations/role.mutations";
 import RowHeader from "../roles/_components/RowHeader";
 import ActivitySwitcher from "../roles/_components/ActivitySwitcher";

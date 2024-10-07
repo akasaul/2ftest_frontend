@@ -32,10 +32,12 @@ const useAuthProvider = () => {
   });
 
   const router = useRouter();
-  const token = localStorage.getItem("token");
-  const view = localStorage.getItem("view");
   const [enableGetPermissions, setEnableGetPermissions] = useState(false);
   const { data } = useGetMyPermissions(enableGetPermissions);
+  const token =
+    typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  const view =
+    typeof window !== "undefined" ? localStorage.getItem("view") : null;
 
   useEffect(() => {
     if (token && view) {
