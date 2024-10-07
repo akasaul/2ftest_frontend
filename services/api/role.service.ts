@@ -35,6 +35,30 @@ export const updateRole = async (updateRolesBody: UpdateRolesBody) => {
   return response;
 };
 
+interface ChangeUserActivityBody {
+  userId: number;
+  isActive: boolean;
+}
+export const changeUserActvity = async (
+  updateRolesBody: ChangeUserActivityBody,
+) => {
+  const response = await api.put(
+    `${paths.restuarants.users}/${updateRolesBody.userId}`,
+    { isActive: updateRolesBody.isActive },
+  );
+  return response;
+};
+
+export const deleteRestaurantUser = async (userId: number) => {
+  const response = await api.delete(`${paths.restuarants.users}/${userId}`);
+  return response;
+};
+
+export const deleteRole = async (userId: number) => {
+  const response = await api.delete(`${paths.role.get}/${userId}`);
+  return response;
+};
+
 export const assignRole = async (
   roleBody: z.infer<typeof assignRoleSchema>,
 ) => {

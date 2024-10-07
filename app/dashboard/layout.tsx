@@ -14,12 +14,14 @@ import {
   Box,
   ListItemButton,
   Stack,
+  Button,
 } from "@mui/material";
-import { Menu } from "@mui/icons-material";
+import { Logout, Menu } from "@mui/icons-material";
 import { AuthGuard } from "@/guards/auth.guard";
 import navItems from "@/configs/navItems";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { useAuth } from "@/providers/AuthProvider";
 
 export default function AdminLayout({
   children,
@@ -28,6 +30,7 @@ export default function AdminLayout({
 }) {
   const [open, setOpen] = useState(true);
   const pathname = usePathname();
+  const { logout } = useAuth();
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -122,6 +125,17 @@ export default function AdminLayout({
               ))}
             </List>
             <Divider />
+
+            <Button
+              type="submit"
+              sx={{ height: "42px", color: "#f00", marginBlock: "10px", width: '100%', textTransform: 'capitalize' }}
+              onClick={logout}
+            >
+              <Stack direction={"row"} justifyContent="center" gap={2}>
+                <Typography variant="h5">Logout</Typography>
+                <Logout />
+              </Stack>
+            </Button>
           </Box>
         </Drawer>
 

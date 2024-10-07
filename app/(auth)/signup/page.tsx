@@ -65,9 +65,10 @@ const SignUp = () => {
 
   return (
     <Stack spacing={3}>
-      <Stack spacing={1}>
+     <Stack spacing={3} direction={'row'} paddingTop={2}>
+            <img src={"/icons/pizzaOnly.svg"} height={30} width={30} />
         <Typography variant="h4">Pizza</Typography>
-      </Stack>
+      </Stack> 
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={2}>
           <Controller

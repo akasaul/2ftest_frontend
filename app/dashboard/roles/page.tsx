@@ -23,11 +23,16 @@ import { Role } from "@/services/types/role.type";
 import ActivitySwitcher from "./_components/ActivitySwitcher";
 import { mkConfig, generateCsv, download } from "export-to-csv";
 import RowHeader from "./_components/RowHeader";
-import { useUpdateRole } from "@/services/mutations/role.mutations";
+import {
+  useDeleteRestaurantUser,
+  useDeleteRole,
+  useUpdateRole,
+} from "@/services/mutations/role.mutations";
 import { useAuth } from "@/providers/AuthProvider";
 import { Can } from "@casl/react";
 import AddRoleForm from "./_components/AddRoleModal";
 import UpdateRoleForm from "./_components/UpdateRoleForm";
+import { toast } from "react-toastify";
 
 interface Props {
   handleSetRoleId: (id: number) => void;
@@ -61,6 +66,7 @@ const RolesTable = ({
   });
 
   const { mutateAsync: updateRole } = useUpdateRole();
+  const { mutateAsync: deleteRole } = useDeleteRole();
 
   const columns = useMemo<MRT_ColumnDef<Role>[]>(
     () => [
@@ -98,6 +104,7 @@ const RolesTable = ({
                       roleId: cell.getValue()?.id as number,
                       isActive: active,
                     });
+                    toast.success(`Role activity changed!`);
                     refetch();
                   }}
                 />
@@ -121,8 +128,18 @@ const RolesTable = ({
 
             {ability && (
               <Can I={"manageRole"} a={"Role"} ability={ability}>
-                <Tooltip arrow title="Details">
-                  <IconButton>
+                <Tooltip arrow title="Delete Role">
+                  <IconButton
+                    onClick={async () => {
+                      try {
+                        await deleteRole(cell.getValue().id);
+                        toast.success("Role deleted successfully!");
+                        refetch()
+                      } catch (err) {
+                        toast.error("Error deleting the role");
+                      }
+                    }}
+                  >
                     <img src={"/icons/deleteIcon.svg"} alt="delete" />
                   </IconButton>
                 </Tooltip>

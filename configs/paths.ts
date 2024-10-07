@@ -38,7 +38,7 @@ export const paths = {
     users: "/restaurants/users",
   },
   user: {
-    home: "/home",
+    home: "/",
   },
   pizza: {
     popular: "/pizzas/popular",

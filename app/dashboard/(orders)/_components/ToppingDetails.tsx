@@ -1,6 +1,6 @@
 "use client";
 import { MyOrderTopping } from "@/services/types/order.type";
-import { Box, Modal, Typography } from "@mui/material";
+import { Box, Modal, Stack, Typography } from "@mui/material";
 
 interface Props {
   isOpen: boolean;
@@ -36,17 +36,38 @@ const ToppingDetails = ({
           p: 4,
         }}
       >
-        {defaultToppings.map((top) => (
-          <Typography key={top.id} id="modal-modal-description" sx={{ mt: 2 }}>
-            {top.name}
-          </Typography>
-        ))}
-
-        {additionalToppings.map((top) => (
-          <Typography key={top.id} id="modal-modal-description" sx={{ mt: 2 }}>
-            {top.name}
-          </Typography>
-        ))}
+        <Stack spacing={2}>
+          <Box>
+            <Typography
+              variant="h5"
+              color={"#00000080"}
+              fontWeight={500}
+              lineHeight={1.2}
+            >
+              Default Toppings
+            </Typography>
+            {defaultToppings.map((top) => (
+              <Typography key={top.id} id="modal-modal-description">
+                {top.name}
+              </Typography>
+            ))}
+          </Box>
+          <Box>
+            <Typography
+              variant="h5"
+              color={"#00000080"}
+              fontWeight={500}
+              lineHeight={1.2}
+            >
+              Additional Toppings
+            </Typography>
+            {additionalToppings.map((top) => (
+              <Typography key={top.id} id="modal-modal-description">
+                {top.name}
+              </Typography>
+            ))}
+          </Box>
+        </Stack>
       </Box>
     </Modal>
   );

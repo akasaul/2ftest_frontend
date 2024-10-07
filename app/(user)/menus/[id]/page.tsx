@@ -18,7 +18,7 @@ const MenuDetails = ({ params: { id } }: { params: { id: number } }) => {
       >
         <Stack sx={{ flex: 3 }}>
           <img
-            src="https://picsum.photos/200/200"
+            src={data?.data?.pizzaCover}
             alt="pizza"
             style={{
               height: "400px",

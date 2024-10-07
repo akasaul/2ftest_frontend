@@ -1,16 +1,21 @@
-import { AccountCircle } from "@mui/icons-material";
+import {
+  AccountCircle,
+  LocalPizzaSharp,
+  DeliveryDining,
+  VerifiedUser,
+} from "@mui/icons-material";
 import { paths } from "./paths";
 
 const navItems = [
   {
     title: "Orders",
     path: paths.dashboard.orders,
-    icon: <AccountCircle />,
+    icon: <DeliveryDining />,
   },
   {
     title: "Add menu",
     path: paths.dashboard.addMenu,
-    icon: <AccountCircle />,
+    icon: <LocalPizzaSharp />,
   },
   {
     title: "Roles",
@@ -20,7 +25,7 @@ const navItems = [
   {
     title: "Users",
     path: paths.dashboard.users,
-    icon: <AccountCircle />,
+    icon: <VerifiedUser />,
   },
 ];
 

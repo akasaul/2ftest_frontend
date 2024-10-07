@@ -94,11 +94,13 @@ const SignUpRestaurant = () => {
 
   return (
     <Stack spacing={3}>
-      <Stack spacing={1}>
+      <Stack spacing={3} direction={'row'} paddingTop={2}>
+            <img src={"/icons/pizzaOnly.svg"} height={30} width={30} />
         <Typography variant="h4">Pizza</Typography>
       </Stack>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={2}>
+
           <Controller
             control={control}
             name="firstName"
@@ -112,6 +114,7 @@ const SignUpRestaurant = () => {
               </FormControl>
             )}
           />
+
           <Controller
             control={control}
             name="lastName"
@@ -125,6 +128,7 @@ const SignUpRestaurant = () => {
               </FormControl>
             )}
           />
+
           <Controller
             control={control}
             name="email"
@@ -138,6 +142,7 @@ const SignUpRestaurant = () => {
               </FormControl>
             )}
           />
+
           <Controller
             control={control}
             name="password"
@@ -174,6 +179,7 @@ const SignUpRestaurant = () => {
               </FormControl>
             )}
           />
+
           <Controller
             control={control}
             name="confirmPassword"
@@ -336,6 +342,7 @@ const SignUpRestaurant = () => {
               </div>
             )}
           />
+
           <Button
             disabled={isPending}
             type="submit"

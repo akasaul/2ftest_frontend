@@ -24,6 +24,7 @@ import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import AddToppingForm from "./addToppingForm";
+import { toast } from "react-toastify";
 
 const AddMenuForm = () => {
   const {
@@ -63,7 +64,7 @@ const AddMenuForm = () => {
     formData.append("toppings", JSON.stringify(values.toppings));
 
     await createPizza(formData);
-    setOpen(true);
+    toast.success('Pizza created succesfully');
   };
 
   const handleClose = () => {

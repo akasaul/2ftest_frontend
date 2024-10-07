@@ -20,10 +20,11 @@ export const useGetRestaurantRoles = (props: GetRestaurantRoleProps) =>
     queryFn: () => getRestaurantRoles(props),
   });
 
-export const useGetMyPermissions = () =>
+export const useGetMyPermissions = (enabled: boolean) =>
   useQuery({
     queryKey: ["getMyPermissions"],
     queryFn: () => getMyPermissions(),
+    enabled,
   });
 
 export const useGetRolePermissions = (id: number) =>

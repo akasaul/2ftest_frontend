@@ -1,7 +1,6 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
 
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -15,23 +14,23 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
     >
       <Box
         sx={{
-          alignItems: "center",
           background: "#FF9921",
           color: "var(--mui-palette-common-white)",
           display: { xs: "none", lg: "flex" },
-          justifyContent: "center",
           p: 3,
         }}
       >
-        <Stack spacing={3}>
+        <Stack
+          spacing={3}
+          sx={{
+            height: "100vh",
+            width: '100%',
+          alignItems: "center",
+          justifyContent: "center",
+          }}
+        >
           <Stack spacing={1}>
-            <Typography
-              color="inherit"
-              sx={{ fontSize: "24px", lineHeight: "32px", textAlign: "center" }}
-              variant="h1"
-            >
-              Niko
-            </Typography>
+            <img src={"/icons/pizzaOnly.svg"} height={70} width={70} />
           </Stack>
         </Stack>
       </Box>

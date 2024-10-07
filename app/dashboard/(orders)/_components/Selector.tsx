@@ -8,6 +8,7 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 interface Props {
   defaultStatus: string;
@@ -28,6 +29,7 @@ const StatusSelector = ({ defaultStatus, id, onStatusChange }: Props) => {
       orderId: id,
     });
     onStatusChange();
+    toast.success("Status changed successfully!");
   };
 
   return (

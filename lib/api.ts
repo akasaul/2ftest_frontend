@@ -6,7 +6,8 @@ import {
 } from "./interceptors";
 
 const axiosRequestConfig: AxiosRequestConfig = {
-  baseURL: "https://two-f-capital-test-backend.onrender.com/api",
+  // baseURL: "https://two-f-capital-test-backend.onrender.com/api",
+  baseURL: "http://localhost:7000/api",
   responseType: "json",
   headers: {
     "Content-Type": "application/json",

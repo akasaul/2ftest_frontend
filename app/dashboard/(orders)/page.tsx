@@ -8,13 +8,7 @@ import {
   type MRT_ColumnFiltersState,
   type MRT_PaginationState,
 } from "material-react-table";
-import {
-  Box,
-  IconButton,
-  Stack,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Box, IconButton, Stack, Tooltip, Typography } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { mkConfig, generateCsv, download } from "export-to-csv";
 import { useGetOrders } from "@/services/queries/order.query";
@@ -24,8 +18,20 @@ import { useAuth } from "@/providers/AuthProvider";
 import StatusSelector from "./_components/Selector";
 import { orderStatuses } from "@/utils/constants";
 import ToppingDetails from "./_components/ToppingDetails";
+import { Topping } from "@/services/types/toppings.type";
 
-const OrdersTable = () => {
+interface Props {
+  handleOpenToggle: () => void;
+  handleCloseToggle: () => void;
+  handleSetAdditionalTopppings: (toppings: Topping[]) => void;
+  handleSetDefaultToppings: (toppings: Topping[]) => void;
+}
+
+const OrdersTable = ({
+  handleOpenToggle,
+  handleSetAdditionalTopppings,
+  handleSetDefaultToppings,
+}: Props) => {
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
     [],
   );
@@ -46,7 +52,7 @@ const OrdersTable = () => {
   const [status, setStatus] = useState<string>("");
   const [open, setIsOpen] = useState(false);
 
-  console.log({open});
+  console.log({ open });
 
   const columns = useMemo<MRT_ColumnDef<RestaurantOrder>[]>(
     () => [
@@ -57,11 +63,15 @@ const OrdersTable = () => {
         Header: () => <RowHeader header="Name" />,
         Cell: ({ cell }: { cell: any }) => (
           <Stack direction={"row"} alignItems={"center"} spacing={2}>
-            <img style={{
-              height: 30,
-              width: 30,
-              borderRadius: '50%',
-            }} src={cell.getValue()?.cover} alt="delete" />
+            <img
+              style={{
+                height: 30,
+                width: 30,
+                borderRadius: "50%",
+              }}
+              src={cell.getValue()?.cover}
+              alt="pizza"
+            />
             <Typography>{cell.getValue()?.name}</Typography>
           </Stack>
         ),
@@ -74,25 +84,24 @@ const OrdersTable = () => {
         }),
         header: "Toppings",
         Header: () => <RowHeader header="Toppings" />,
-        Cell: ({ cell }: {cell: any}) => (
+        Cell: ({ cell }: { cell: any }) => {
+
+          handleSetAdditionalTopppings(cell.getValue().additionalToppings)
+          handleSetDefaultToppings(cell.getValue().defaultToppings)
+        
+        return(
           <Tooltip arrow title="Details">
             <IconButton
               onClick={() => {
-                setIsOpen(true);
+          handleOpenToggle()
               }}
               color="primary"
             >
-              <ToppingDetails
-                isOpen={open}
-                handleClose={() => setIsOpen(false)}
-                defaultToppings={cell.getValue()?.defaultToppings}
-                additionalToppings={cell.getValue()?.additionalToppings}
-              />
               <img src={"/icons/viewIcon.svg"} alt="view" />
               <Typography>Toppings</Typography>
             </IconButton>
           </Tooltip>
-        ),
+        )},
       },
       {
         accessorKey: "qty",
@@ -217,6 +226,43 @@ const OrdersTable = () => {
   return <MaterialReactTable table={table} />;
 };
 
-const OrdersPage = () => <OrdersTable />;
+const OrdersPage = () => {
+  const [openToggle, setOpenToggle] = useState<boolean>(false);
+  const [defaultToppings, setDefaultToppings] = useState<Topping[]>([]);
+  const [additionalToppings, setAdditionalToppings] = useState<Topping[]>([]);
+
+  const handleOpenToggle = () => {
+    setOpenToggle(true);
+  };
+
+  const handleCloseToggle = () => {
+    setOpenToggle(false);
+  };
+
+  const handleSetDefaultToppings = (defaultToppings: Topping[]) => {
+    setDefaultToppings(defaultToppings);
+  };
+
+  const handleSetAdditionalTopppings = (defaultToppings: Topping[]) => {
+    setAdditionalToppings(defaultToppings);
+  };
+
+  return (
+    <>
+      <ToppingDetails
+        isOpen={openToggle}
+        handleClose={handleCloseToggle}
+        defaultToppings={defaultToppings}
+        additionalToppings={additionalToppings}
+      />
+      <OrdersTable
+        handleOpenToggle={handleOpenToggle}
+        handleCloseToggle={handleCloseToggle}
+        handleSetAdditionalTopppings={handleSetAdditionalTopppings}
+        handleSetDefaultToppings={handleSetDefaultToppings}
+      />
+    </>
+  );
+};
 
 export default OrdersPage;

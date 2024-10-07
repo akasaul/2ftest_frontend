@@ -19,6 +19,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import { z } from "zod";
 
 interface Props {
@@ -46,8 +47,13 @@ const AddUserForm = ({ handleClose }: Props) => {
   const { mutateAsync: registerRestuarantUser } = useRegisterRestaurantUser();
 
   const onSubmit = async (values: Values) => {
-    await registerRestuarantUser(values);
-    handleClose();
+    try {
+      await registerRestuarantUser(values);
+      handleClose();
+      toast.success(`User activity changed!`);
+    } catch (err) {
+      toast.error(`Phone Number is not unique!`);
+    }
   };
 
   if (isLoading) return <PizzaLoader />;
@@ -61,7 +67,7 @@ const AddUserForm = ({ handleClose }: Props) => {
         lineHeight={1.2}
         textAlign={"center"}
       >
-        Add Role
+        Add User
       </Typography>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={"20px"} marginBlock={"30px"}>

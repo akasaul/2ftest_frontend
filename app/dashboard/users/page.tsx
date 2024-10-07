@@ -8,10 +8,22 @@ import {
   type MRT_ColumnFiltersState,
   type MRT_PaginationState,
 } from "material-react-table";
-import { Box, Button, IconButton, Modal, Stack, Tooltip, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  IconButton,
+  Modal,
+  Stack,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { mkConfig, generateCsv, download } from "export-to-csv";
-import { useUpdateRole } from "@/services/mutations/role.mutations";
+import {
+  useChangeUserActivity,
+  useDeleteRestaurantUser,
+  useUpdateRole,
+} from "@/services/mutations/role.mutations";
 import RowHeader from "../roles/_components/RowHeader";
 import ActivitySwitcher from "../roles/_components/ActivitySwitcher";
 import { useGetRestaurantUsers } from "@/services/queries/restuarants.query";
@@ -19,9 +31,10 @@ import { RestaurantUser } from "@/services/types/restaurant.type";
 import AddUserForm from "./_components/AddUserForm";
 import { useAuth } from "@/providers/AuthProvider";
 import { Can } from "@casl/react";
+import { toast } from "react-toastify";
 
 const UsersTable = () => {
-    const { ability } = useAuth();
+  const { ability } = useAuth();
 
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
     [],
@@ -40,7 +53,8 @@ const UsersTable = () => {
       columnFilters,
     });
 
-  const { mutateAsync: updateRole } = useUpdateRole();
+  const { mutateAsync: updateUser } = useChangeUserActivity();
+  const { mutateAsync: deleteUser } = useDeleteRestaurantUser();
   const [open, setOpen] = useState(false);
 
   const columns = useMemo<MRT_ColumnDef<RestaurantUser>[]>(
@@ -78,16 +92,29 @@ const UsersTable = () => {
             <ActivitySwitcher
               isActive={cell.getValue()?.isActive as boolean}
               onActivityChange={async (active) => {
-                await updateRole({
-                  roleId: cell.getValue()?.id as number,
+                await updateUser({
+                  userId: cell.getValue()?.id as number,
                   isActive: active,
                 });
+                toast.success(`User activity changed!`);
                 refetch();
               }}
             />
-           
-            <Tooltip arrow title="Delete">
-              <IconButton onClick={() => {}}>
+
+            <Tooltip
+              arrow
+              title="Delete User"
+              onClick={() => console.log('geek geeked')}
+            >
+              <IconButton onClick={async () => {
+                try {
+                  await deleteUser(cell.getValue().id);
+                  toast.success("User deleted successfully!");
+                  refetch();
+                } catch (err) {
+                  toast.error("Error deleting the user");
+                }
+              }}>
                 <img src={"/icons/deleteIcon.svg"} alt="delete" />
               </IconButton>
             </Tooltip>
@@ -103,7 +130,6 @@ const UsersTable = () => {
     decimalSeparator: ".",
     useKeysAsHeaders: true,
   });
-
 
   const handleClose = () => {
     setOpen(false);

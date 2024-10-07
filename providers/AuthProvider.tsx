@@ -32,14 +32,15 @@ const useAuthProvider = () => {
   });
 
   const router = useRouter();
-  const { data } = useGetMyPermissions();
+  const token = localStorage.getItem("token");
+  const view = localStorage.getItem("view");
+  const [enableGetPermissions, setEnableGetPermissions] = useState(false);
+  const { data } = useGetMyPermissions(enableGetPermissions);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const view = localStorage.getItem("view");
-
     if (token && view) {
       const permissions = data?.data ?? [];
+      setEnableGetPermissions(true);
       const ability = defineAbilityFor(permissions);
       setAuthState({
         ability,
@@ -49,6 +50,7 @@ const useAuthProvider = () => {
         isLoading: false,
       });
     } else {
+      setEnableGetPermissions(false);
       setAuthState({
         ability: null,
         permissions: [],
@@ -57,7 +59,7 @@ const useAuthProvider = () => {
         isLoading: false,
       });
     }
-  }, [data?.data]);
+  }, [token, view, data?.data]);
 
   const login = (token: string, view: string) => {
     localStorage.setItem("token", token);
